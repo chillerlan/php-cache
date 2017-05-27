@@ -20,7 +20,7 @@
 [codeclimate-badge]: https://img.shields.io/codeclimate/github/codemasher/php-cache.svg
 [codeclimate]: https://codeclimate.com/github/codemasher/php-cache
 
-##Features:
+## Features:
  - [PSR-16 simple-cache-implementation](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-16-simple-cache.md)
  - persistent: File based, Memcached
  - non-persistent: Session, Memory 
