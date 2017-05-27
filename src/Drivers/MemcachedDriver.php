@@ -47,11 +47,7 @@ class MemcachedDriver extends CacheDriverAbstract{
 	public function get(string $key, $default = null){
 		$value = $this->memcached->get($key);
 
-		if($value){
-			return $value;
-		}
-
-		return $default;
+		return $value ? $value : $default;
 	}
 
 	/**
