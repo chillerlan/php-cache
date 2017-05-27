@@ -87,7 +87,7 @@ abstract class CacheDriverAbstract implements CacheDriverInterface{
 
 		foreach($booleans as $bool){
 			if(!$bool){
-				return false;
+				return false; // @codeCoverageIgnore
 			}
 		}
 
