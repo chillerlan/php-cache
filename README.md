@@ -22,12 +22,13 @@
 
 ## Features:
  - [PSR-16 simple-cache-implementation](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-16-simple-cache.md)
- - persistent: File based, Memcached
+ - persistent: File based, Memcached, Redis
  - non-persistent: Session, Memory 
 
 ## Requirements
  - **PHP 7+**
  - Memcached extension (optional)
+ - Redis extension (optional)
  
 ## Documentation
 ### Installation using [composer](https://getcomposer.org)
@@ -52,6 +53,12 @@ Profit!
 ### Usage
 Just invoke a `Cache` instance with the desired `CacheDriverInterface` like so:
 ```php
+// Redis
+$redis = new Redis();
+$redis->pconnect('127.0.0.1', 6379);
+		
+$cacheDriver = new RedisDriver($redis);
+
 // Memcached
 $memcached = new Memcached('test');
 $memcached->addServer('localhost', 11211);
