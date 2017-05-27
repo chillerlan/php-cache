@@ -55,7 +55,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid ttl
 	 */
 	public function testSetInvalidTTL(){
@@ -63,7 +63,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid key
 	 */
 	public function testSetInvalidKey(){
@@ -77,7 +77,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid key
 	 */
 	public function testGetInvalidKey(){
@@ -89,7 +89,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid key
 	 */
 	public function testHasInvalidKey(){
@@ -102,7 +102,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid key
 	 */
 	public function testDeleteInvalidKey(){
@@ -124,7 +124,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid ttl
 	 */
 	public function testSetMultipleInvalidTTL(){
@@ -132,7 +132,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid data
 	 */
 	public function testSetMultipleInvalidData(){
@@ -140,7 +140,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid key
 	 */
 	public function testSetMultipleInvalidKey(){
@@ -152,7 +152,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid data
 	 */
 	public function testGetMultipleInvalidData(){
@@ -160,7 +160,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid key
 	 */
 	public function testGetMultipleInvalidKey(){
@@ -175,7 +175,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid data
 	 */
 	public function testDeleteMultipleInvalidData(){
@@ -183,7 +183,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 * @expectedExceptionMessage invalid key
 	 */
 	public function testDeleteMultipleInvalidKey(){

@@ -180,12 +180,12 @@ class Cache implements CacheInterface{
 	 * @param $key
 	 *
 	 * @return void
-	 * @throws \chillerlan\SimpleCache\SimpleCacheException
+	 * @throws \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 */
 	protected function checkKey($key){
 
 		if(!is_string($key) || empty($key)){
-			throw new SimpleCacheException('invalid key');
+			throw new SimpleCacheInvalidArgumentException('invalid key');
 		}
 
 	}
@@ -194,7 +194,7 @@ class Cache implements CacheInterface{
 	 * @param array $keys
 	 *
 	 * @return void
-	 * @throws \chillerlan\SimpleCache\SimpleCacheException
+	 * @throws \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 */
 	protected function checkKeyArray(array $keys){
 
@@ -208,7 +208,7 @@ class Cache implements CacheInterface{
 	 * @param mixed $data
 	 *
 	 * @return array
-	 * @throws \chillerlan\SimpleCache\SimpleCacheException
+	 * @throws \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 */
 	protected function getData($data):array{
 
@@ -219,7 +219,7 @@ class Cache implements CacheInterface{
 			return $data;
 		}
 		else{
-			throw new SimpleCacheException('invalid data');
+			throw new SimpleCacheInvalidArgumentException('invalid data');
 		}
 
 	}
@@ -228,7 +228,7 @@ class Cache implements CacheInterface{
 	 * @param mixed $ttl
 	 *
 	 * @return int|null
-	 * @throws \chillerlan\SimpleCache\SimpleCacheException
+	 * @throws \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
 	 */
 	protected function getTTL($ttl){
 
@@ -239,7 +239,7 @@ class Cache implements CacheInterface{
 			return $ttl;
 		}
 		else{
-			throw new SimpleCacheException('invalid ttl');
+			throw new SimpleCacheInvalidArgumentException('invalid ttl');
 		}
 
 	}

@@ -1,9 +1,8 @@
 <?php
 /**
- * Class SimpleCacheException
  *
  * @filesource   SimpleCacheException.php
- * @created      25.05.2017
+ * @created      27.05.2017
  * @package      chillerlan\SimpleCache
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2017 Smiley
@@ -12,6 +11,11 @@
 
 namespace chillerlan\SimpleCache;
 
-use \Psr\SimpleCache\InvalidArgumentException;
+use Psr\SimpleCache\CacheException;
 
-class SimpleCacheException extends \Exception implements InvalidArgumentException{}
+/**
+ * Class SimpleCacheException
+ */
+class SimpleCacheException extends \Exception implements CacheException{
+
+}
