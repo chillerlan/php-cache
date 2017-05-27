@@ -20,7 +20,6 @@ class RedisTest extends SimpleCacheTestAbstract{
 	protected function setUp(){
 		$redis = new Redis();
 		$redis->pconnect('127.0.0.1', 6379);
-		$redis->select(0);
 
 		if (defined('Redis::SERIALIZER_IGBINARY') && extension_loaded('igbinary')) {
 			$redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_IGBINARY);
