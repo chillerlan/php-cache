@@ -8,14 +8,13 @@ php:
 services:
   - memcached
   - redis-server
+  - apcu
 
 before_install: pip install --user codecov
 install: travis_retry composer install --no-interaction --prefer-source
 before_script:
   - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - pecl channel-update pecl.php.net
-  - pecl install apcu
   - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "apc.enable=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
