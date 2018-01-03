@@ -233,7 +233,7 @@ class Cache implements CacheInterface{
 	protected function getTTL($ttl){
 
 		if($ttl instanceof \DateInterval){
-			return $ttl->s;
+			return (new \DateTime('now'))->add($ttl)->getTimeStamp() - time();
 		}
 		else if(is_int($ttl) || is_null($ttl)){
 			return $ttl;
