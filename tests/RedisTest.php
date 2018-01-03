@@ -18,6 +18,13 @@ use Redis;
 class RedisTest extends SimpleCacheTestAbstract{
 
 	protected function setUp(){
+
+		if(!extension_loaded('redis')){
+			$this->markTestSkipped('Redis not installed/enabled');
+
+			return $this;
+		}
+
 		$redis = new Redis();
 		$redis->pconnect('127.0.0.1', 6379);
 

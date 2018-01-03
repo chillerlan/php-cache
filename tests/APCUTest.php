@@ -17,6 +17,13 @@ use chillerlan\SimpleCache\Drivers\APCUDriver;
 class APCUTest extends SimpleCacheTestAbstract{
 
 	protected function setUp(){
+
+		if(!extension_loaded('apcu')){
+			$this->markTestSkipped('APCU not installed/enabled');
+
+			return $this;
+		}
+
 		$this->cacheDriver = new APCUDriver;
 
 		parent::setUp();

@@ -18,6 +18,13 @@ use Memcached;
 class MemcachedTest extends SimpleCacheTestAbstract{
 
 	protected function setUp(){
+
+		if(!extension_loaded('memcached')){
+			$this->markTestSkipped('Memcached not installed/enabled');
+
+			return $this;
+		}
+
 		$memcached = new Memcached('test');
 		$memcached->addServer('localhost', 11211);
 
