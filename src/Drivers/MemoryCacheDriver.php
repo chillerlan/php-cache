@@ -19,12 +19,7 @@ class MemoryCacheDriver extends CacheDriverAbstract{
 	 */
 	protected $cache = [];
 
-	/**
-	 * @param string $key
-	 * @param null   $default
-	 *
-	 * @return mixed
-	 */
+	/** @inheritdoc */
 	public function get(string $key, $default = null){
 
 		if(isset($this->cache[$key])){
@@ -39,13 +34,7 @@ class MemoryCacheDriver extends CacheDriverAbstract{
 		return $default;
 	}
 
-	/**
-	 * @param string   $key
-	 * @param          $value
-	 * @param int|null $ttl
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function set(string $key, $value, int $ttl = null):bool{
 
 		$this->cache[$key] = [
@@ -56,20 +45,14 @@ class MemoryCacheDriver extends CacheDriverAbstract{
 		return true;
 	}
 
-	/**
-	 * @param string $key
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function delete(string $key):bool{
 		unset($this->cache[$key]);
 
 		return true;
 	}
 
-	/**
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function clear():bool{
 		$this->cache = [];
 

@@ -14,21 +14,12 @@ namespace chillerlan\SimpleCache\Drivers;
 
 abstract class CacheDriverAbstract implements CacheDriverInterface{
 
-	/**
-	 * @param string $key
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function has(string $key):bool{
 		return (bool)$this->get($key);
 	}
 
-	/**
-	 * @param array $keys
-	 * @param null  $default
-	 *
-	 * @return array
-	 */
+	/** @inheritdoc */
 	public function getMultiple(array $keys, $default = null):array{
 		$data = [];
 
@@ -39,40 +30,23 @@ abstract class CacheDriverAbstract implements CacheDriverInterface{
 		return $data;
 	}
 
-	/**
-	 * @param array    $values
-	 * @param int|null $ttl
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function setMultiple(array $values, int $ttl = null):bool{
 		$return = [];
 
-		if(!empty($values)){
-
-			foreach($values as $key => $value){
-				$return[] = $this->set($key, $value, $ttl);
-			}
-
+		foreach($values as $key => $value){
+			$return[] = $this->set($key, $value, $ttl);
 		}
 
 		return $this->checkReturn($return);
 	}
 
-	/**
-	 * @param array $keys
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function deleteMultiple(array $keys):bool{
 		$return = [];
 
-		if(!empty($keys)){
-
-			foreach($keys as $key){
-				$return[] = $this->delete($key);
-			}
-
+		foreach($keys as $key){
+			$return[] = $this->delete($key);
 		}
 
 		return $this->checkReturn($return);
@@ -86,9 +60,11 @@ abstract class CacheDriverAbstract implements CacheDriverInterface{
 	protected function checkReturn(array $booleans):bool{
 
 		foreach($booleans as $bool){
-			if(!$bool){
+
+			if(!(bool)$bool){
 				return false; // @codeCoverageIgnore
 			}
+
 		}
 
 		return true;

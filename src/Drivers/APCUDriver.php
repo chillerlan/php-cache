@@ -14,53 +14,26 @@ namespace chillerlan\SimpleCache\Drivers;
 
 class APCUDriver extends CacheDriverAbstract{
 
-	/**
-	 * @param string $key
-	 * @param null   $default
-	 *
-	 * @return mixed
-	 */
+	/** @inheritdoc */
 	public function get(string $key, $default = null){
 		$value = apcu_fetch($key);
 
-		return $value ? $value : $default;
+		return $value ?: $default;
 	}
 
-	/**
-	 * @param string   $key
-	 * @param          $value
-	 * @param int|null $ttl
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function set(string $key, $value, int $ttl = null):bool{
 		return apcu_store($key, $value, $ttl);
 	}
 
-	/**
-	 * @param string $key
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function delete(string $key):bool{
 		return apcu_delete($key);
 	}
 
-	/**
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function clear():bool{
 		return apcu_clear_cache();
 	}
 
-	/**
-	 * @param array    $values
-	 * @param int|null $ttl
-	 *
-	 * @return bool
-	public function setMultiple(array $values, int $ttl = null):bool{
-		$result = apcu_store($values, null, $ttl);
-		return empty($result);
-	}
-*/
 }

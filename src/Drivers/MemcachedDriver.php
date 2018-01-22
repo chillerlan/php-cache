@@ -38,51 +38,29 @@ class MemcachedDriver extends CacheDriverAbstract{
 
 	}
 
-	/**
-	 * @param string $key
-	 * @param null   $default
-	 *
-	 * @return mixed
-	 */
+	/** @inheritdoc */
 	public function get(string $key, $default = null){
 		$value = $this->memcached->get($key);
 
-		return $value ? $value : $default;
+		return $value ?: $default;
 	}
 
-	/**
-	 * @param string   $key
-	 * @param          $value
-	 * @param int|null $ttl
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function set(string $key, $value, int $ttl = null):bool{
 		return $this->memcached->set($key, $value, $ttl);
 	}
 
-	/**
-	 * @param string $key
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function delete(string $key):bool{
 		return $this->memcached->delete($key);
 	}
 
-	/**
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function clear():bool{
 		return $this->memcached->flush();
 	}
 
-	/**
-	 * @param array $keys
-	 * @param null  $default
-	 *
-	 * @return array
-	 */
+	/** @inheritdoc */
 	public function getMultiple(array $keys, $default = null):array{
 		$values = $this->memcached->getMulti($keys);
 		$return = [];
@@ -94,21 +72,12 @@ class MemcachedDriver extends CacheDriverAbstract{
 		return $return;
 	}
 
-	/**
-	 * @param array    $values
-	 * @param int|null $ttl
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function setMultiple(array $values, int $ttl = null):bool{
 		return $this->memcached->setMulti($values, $ttl);
 	}
 
-	/**
-	 * @param array $keys
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function deleteMultiple(array $keys):bool{
 		$return = $this->memcached->deleteMulti($keys);
 

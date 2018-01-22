@@ -30,12 +30,7 @@ class SessionCacheDriver extends CacheDriverAbstract{
 		$_SESSION[$this->key] = [];
 	}
 
-	/**
-	 * @param string $key
-	 * @param null   $default
-	 *
-	 * @return mixed
-	 */
+	/** @inheritdoc */
 	public function get(string $key, $default = null){
 
 		if(isset($_SESSION[$this->key][$key])){
@@ -51,13 +46,7 @@ class SessionCacheDriver extends CacheDriverAbstract{
 		return $default;
 	}
 
-	/**
-	 * @param string   $key
-	 * @param          $value
-	 * @param int|null $ttl
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function set(string $key, $value, int $ttl = null):bool{
 
 		$_SESSION[$this->key][$key] = [
@@ -68,20 +57,14 @@ class SessionCacheDriver extends CacheDriverAbstract{
 		return true;
 	}
 
-	/**
-	 * @param string $key
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function delete(string $key):bool{
 		unset($_SESSION[$this->key][$key]);
 
 		return true;
 	}
 
-	/**
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function clear():bool{
 		$_SESSION[$this->key] = [];
 

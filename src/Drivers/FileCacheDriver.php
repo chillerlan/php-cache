@@ -42,19 +42,14 @@ class FileCacheDriver extends CacheDriverAbstract{
 
 	}
 
-	/**
-	 * @param string $key
-	 * @param null   $default
-	 *
-	 * @return mixed
-	 */
+	/** @inheritdoc */
 	public function get(string $key, $default = null){
 		$filename = $this->filename($key);
 
 		if(is_file($filename)){
 			$content = file_get_contents($filename);
 
-			if(!is_bool($content)){
+			if(!empty($content)){
 				$data = unserialize($content);
 
 				if(is_null($data->ttl) || $data->ttl > time()){
@@ -69,18 +64,15 @@ class FileCacheDriver extends CacheDriverAbstract{
 		return $default;
 	}
 
-	/**
-	 * @param string   $key
-	 * @param          $value
-	 * @param int|null $ttl
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function set(string $key, $value, int $ttl = null):bool{
 		$filename = $this->filename($key);
 		$data     = new stdClass;
 
-		$data->ttl     = $ttl ? time() + $ttl : null;
+		if($ttl !== null){
+			$data->ttl = time() + $ttl;
+		}
+
 		$data->content = $value;
 
 		file_put_contents($filename, serialize($data));
@@ -92,11 +84,7 @@ class FileCacheDriver extends CacheDriverAbstract{
 		return false; // @codeCoverageIgnore
 	}
 
-	/**
-	 * @param string $key
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function delete(string $key):bool{
 		$filename = $this->filename($key);
 
@@ -107,9 +95,7 @@ class FileCacheDriver extends CacheDriverAbstract{
 		return false;
 	}
 
-	/**
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function clear():bool{
 		$dir = scandir($this->cachedir);
 

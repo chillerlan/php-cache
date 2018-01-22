@@ -1,5 +1,6 @@
 <?php
 /**
+ * Class RedisDriver
  *
  * @filesource   RedisDriver.php
  * @created      27.05.2017
@@ -13,9 +14,6 @@ namespace chillerlan\SimpleCache\Drivers;
 
 use Redis;
 
-/**
- * Class RedisDriver
- */
 class RedisDriver extends CacheDriverAbstract{
 
 	/**
@@ -23,29 +21,23 @@ class RedisDriver extends CacheDriverAbstract{
 	 */
 	protected $redis;
 
+	/**
+	 * RedisDriver constructor.
+	 *
+	 * @param \Redis $redis
+	 */
 	public function __construct(Redis $redis){
 		$this->redis = $redis;
 	}
 
-	/**
-	 * @param string $key
-	 * @param null   $default
-	 *
-	 * @return mixed
-	 */
+	/** @inheritdoc */
 	public function get(string $key, $default = null){
 		$value = $this->redis->get($key);
 
 		return $value ? $value : $default;
 	}
 
-	/**
-	 * @param string   $key
-	 * @param          $value
-	 * @param int|null $ttl
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function set(string $key, $value, int $ttl = null):bool{
 
 		if(is_null($ttl)){
@@ -55,28 +47,17 @@ class RedisDriver extends CacheDriverAbstract{
 		return $this->redis->setex($key, $ttl, $value);
 	}
 
-	/**
-	 * @param string $key
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function delete(string $key):bool{
 		return (bool)$this->redis->delete($key);
 	}
 
-	/**
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function clear():bool{
 		return $this->redis->flushDB();
 	}
 
-	/**
-	 * @param array $keys
-	 * @param null  $default
-	 *
-	 * @return array
-	 */
+	/** @inheritdoc */
 	public function getMultiple(array $keys, $default = null):array{
 		// scary
 		$values = array_combine($keys, $this->redis->mget($keys));
@@ -90,12 +71,7 @@ class RedisDriver extends CacheDriverAbstract{
 		return $return;
 	}
 
-	/**
-	 * @param array    $values
-	 * @param int|null $ttl
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function setMultiple(array $values, int $ttl = null):bool{
 
 		if(is_null($ttl)){
@@ -111,11 +87,7 @@ class RedisDriver extends CacheDriverAbstract{
 		return $this->checkReturn($return);
 	}
 
-	/**
-	 * @param array $keys
-	 *
-	 * @return bool
-	 */
+	/** @inheritdoc */
 	public function deleteMultiple(array $keys):bool{
 		return (bool)$this->redis->delete($keys);
 	}

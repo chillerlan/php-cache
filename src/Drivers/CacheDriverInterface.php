@@ -15,8 +15,8 @@ namespace chillerlan\SimpleCache\Drivers;
 interface CacheDriverInterface{
 
 	/**
-	 * @param string $key
-	 * @param null   $default
+	 * @param string     $key
+	 * @param mixed|null $default
 	 *
 	 * @return mixed
 	 */
@@ -24,7 +24,7 @@ interface CacheDriverInterface{
 
 	/**
 	 * @param string   $key
-	 * @param          $value
+	 * @param mixed    $value
 	 * @param int|null $ttl
 	 *
 	 * @return bool
@@ -51,8 +51,8 @@ interface CacheDriverInterface{
 	public function clear():bool;
 
 	/**
-	 * @param array $keys
-	 * @param null  $default
+	 * @param array      $keys
+	 * @param mixed|null $default
 	 *
 	 * @return array
 	 */
