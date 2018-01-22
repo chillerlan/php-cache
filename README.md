@@ -30,9 +30,10 @@
 
 ## Requirements
  - **PHP 7+**
-   - Memcached
-   - Redis
- 
+   - [Memcached](http://php.net/manual/en/book.memcached.php)
+   - [Redis](https://github.com/phpredis/phpredis/)
+   - [APCU](http://php.net/manual/en/book.apcu.php)
+   
 ## Documentation
 ### Installation using [composer](https://getcomposer.org)
 You can simply clone the repo and run `composer install` in the root directory. 
