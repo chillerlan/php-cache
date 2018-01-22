@@ -1,5 +1,7 @@
 # chillerlan/php-cache
 
+A psr/simple-cache implementation for PHP 7+.
+
 [![version][packagist-badge]][packagist]
 [![license][license-badge]][license]
 [![Travis][travis-badge]][travis]
