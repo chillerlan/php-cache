@@ -66,14 +66,14 @@ class FileCacheDriver extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function set(string $key, $value, int $ttl = null):bool{
-		$filename = $this->filename($key);
-		$data     = new stdClass;
+		$filename      = $this->filename($key);
+		$data          = new stdClass;
+		$data->ttl     = null;
+		$data->content = $value;
 
 		if($ttl !== null){
 			$data->ttl = time() + $ttl;
 		}
-
-		$data->content = $value;
 
 		file_put_contents($filename, serialize($data));
 
