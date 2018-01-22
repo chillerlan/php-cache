@@ -81,8 +81,7 @@ class MemcachedDriver extends CacheDriverAbstract{
 	public function deleteMultiple(array $keys):bool{
 		$return = $this->memcached->deleteMulti($keys);
 
-		/** @var bool[] $return */
-		return $this->checkReturn($return);
+		return $this->checkReturn((array)$return);
 	}
 
 }

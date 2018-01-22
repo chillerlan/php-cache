@@ -23,12 +23,12 @@ class APCUDriver extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function set(string $key, $value, int $ttl = null):bool{
-		return apcu_store($key, $value, $ttl);
+		return (bool)apcu_store($key, $value, $ttl);
 	}
 
 	/** @inheritdoc */
 	public function delete(string $key):bool{
-		return apcu_delete($key);
+		return (bool)apcu_delete($key);
 	}
 
 	/** @inheritdoc */
