@@ -1,11 +1,4 @@
-build:
-  tests:
-   override:
-    -
-      command: 'vendor/bin/phpunit --coverage-clover=coverage'
-      coverage:
-        file: 'coverage'
-        format: 'clover'
 filter:
   excluded_paths:
+    - scripts/*
     - tests/*
