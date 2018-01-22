@@ -1,24 +1,27 @@
-# codemasher/php-cache
+# chillerlan/php-cache
 
 [![version][packagist-badge]][packagist]
 [![license][license-badge]][license]
 [![Travis][travis-badge]][travis]
 [![Coverage][coverage-badge]][coverage]
 [![Scrunitizer][scrutinizer-badge]][scrutinizer]
-[![Code Climate][codeclimate-badge]][codeclimate]
+[![Packagist downloads][downloads-badge]][downloads]
+[![PayPal donate][donate-badge]][donate]
 
-[packagist-badge]: https://img.shields.io/packagist/v/chillerlan/php-cache.svg
+[packagist-badge]: https://img.shields.io/packagist/v/chillerlan/php-cache.svg?style=flat-square
 [packagist]: https://packagist.org/packages/chillerlan/php-cache
-[license-badge]: https://img.shields.io/packagist/l/chillerlan/php-cache.svg
-[license]: https://github.com/codemasher/php-cache/blob/master/LICENSE
-[travis-badge]: https://img.shields.io/travis/codemasher/php-cache.svg
-[travis]: https://travis-ci.org/codemasher/php-cache
-[coverage-badge]: https://img.shields.io/codecov/c/github/codemasher/php-cache.svg
-[coverage]: https://codecov.io/github/codemasher/php-cache
-[scrutinizer-badge]: https://img.shields.io/scrutinizer/g/codemasher/php-cache.svg
-[scrutinizer]: https://scrutinizer-ci.com/g/codemasher/php-cache
-[codeclimate-badge]: https://img.shields.io/codeclimate/github/codemasher/php-cache.svg
-[codeclimate]: https://codeclimate.com/github/codemasher/php-cache
+[license-badge]: https://img.shields.io/github/license/chillerlan/php-cache.svg?style=flat-square
+[license]: https://github.com/chillerlan/php-cache/blob/master/LICENSE
+[travis-badge]: https://img.shields.io/travis/chillerlan/php-cache.svg?style=flat-square
+[travis]: https://travis-ci.org/chillerlan/php-cache
+[coverage-badge]: https://img.shields.io/codecov/c/github/chillerlan/php-cache.svg?style=flat-square
+[coverage]: https://codecov.io/github/chillerlan/php-cache
+[scrutinizer-badge]: https://img.shields.io/scrutinizer/g/chillerlan/php-cache.svg?style=flat-square
+[scrutinizer]: https://scrutinizer-ci.com/g/chillerlan/php-cache
+[downloads-badge]: https://img.shields.io/packagist/dt/chillerlan/php-cache.svg?style=flat-square
+[downloads]: https://packagist.org/packages/chillerlan/php-cache/stats
+[donate-badge]: https://img.shields.io/badge/donate-paypal-ff33aa.svg?style=flat-square
+[donate]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WLYUNAT9ZTJZ4
 
 ## Features:
  - [PSR-16 simple-cache-implementation](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-16-simple-cache.md)
@@ -27,8 +30,8 @@
 
 ## Requirements
  - **PHP 7+**
- - Memcached extension (optional)
- - Redis extension (optional)
+   - Memcached
+   - Redis
  
 ## Documentation
 ### Installation using [composer](https://getcomposer.org)
@@ -45,8 +48,9 @@ In case you want to include it elsewhere, just add the following to your *compos
 
 ### Manual installation
 Download the desired version of the package from [master](https://github.com/codemasher/php-cache/archive/master.zip) or 
-[release](https://github.com/codemasher/php-cache/releases) and extract the contents to your project folder. 
-Point the namespace `chillerlan\SimpleCache` to the folder `src` of the package.
+[release](https://github.com/codemasher/php-cache/releases) and extract the contents to your project folder.After that:
+  - run `composer install` to install the required dependencies and generate `/vendor/autoload.php`.
+  - if you use a custom autoloader, point the namespace `chillerlan\SimpleCache` to the folder `src` of the package 
 
 Profit!
 
