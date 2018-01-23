@@ -50,8 +50,8 @@ In case you want to include it elsewhere, just add the following to your *compos
 ```
 
 ### Manual installation
-Download the desired version of the package from [master](https://github.com/codemasher/php-cache/archive/master.zip) or 
-[release](https://github.com/codemasher/php-cache/releases) and extract the contents to your project folder.After that:
+Download the desired version of the package from [master](https://github.com/chillerlan/php-cache/archive/master.zip) or 
+[release](https://github.com/chillerlan/php-cache/releases) and extract the contents to your project folder.After that:
   - run `composer install` to install the required dependencies and generate `/vendor/autoload.php`.
   - if you use a custom autoloader, point the namespace `chillerlan\SimpleCache` to the folder `src` of the package 
 
