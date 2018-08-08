@@ -13,9 +13,18 @@
 namespace chillerlan\SimpleCache;
 
 use chillerlan\SimpleCache\Drivers\CacheDriverInterface;
+use Psr\Log\{LoggerAwareInterface, LoggerInterface, NullLogger};
 use Psr\SimpleCache\CacheInterface;
+use DateInterval, DateTime, Traversable;
 
-class Cache implements CacheInterface{
+class Cache implements CacheInterface, LoggerAwareInterface{
+
+	/**
+	 * The logger instance.
+	 *
+	 * @var LoggerInterface
+	 */
+	protected $logger;
 
 	/**
 	 * @var \chillerlan\SimpleCache\Drivers\CacheDriverInterface
@@ -26,9 +35,23 @@ class Cache implements CacheInterface{
 	 * Cache constructor.
 	 *
 	 * @param \chillerlan\SimpleCache\Drivers\CacheDriverInterface $cacheDriver
+	 * @param \Psr\Log\LoggerInterface                             $logger
 	 */
-	public function __construct(CacheDriverInterface $cacheDriver){
+	public function __construct(CacheDriverInterface $cacheDriver, LoggerInterface $logger = null){
 		$this->cacheDriver = $cacheDriver;
+		$this->setLogger($logger ?? new NullLogger);
+	}
+
+	/**
+	 * Sets a logger.
+	 *
+	 * @param LoggerInterface $logger
+	 *
+	 * @return void
+	 */
+	public function setLogger(LoggerInterface $logger):void{
+		$this->logger = $logger;
+		$this->cacheDriver->setLogger($logger);
 	}
 
 	/** @inheritdoc */
@@ -39,26 +62,26 @@ class Cache implements CacheInterface{
 	}
 
 	/** @inheritdoc */
-	public function set($key, $value, $ttl = null){
+	public function set($key, $value, $ttl = null):bool{
 		$this->checkKey($key);
 
 		return $this->cacheDriver->set($key, $value, $this->getTTL($ttl));
 	}
 
 	/** @inheritdoc */
-	public function delete($key){
+	public function delete($key):bool{
 		$this->checkKey($key);
 
 		return $this->cacheDriver->delete($key);
 	}
 
 	/** @inheritdoc */
-	public function clear(){
+	public function clear():bool{
 		return $this->cacheDriver->clear();
 	}
 
 	/** @inheritdoc */
-	public function getMultiple($keys, $default = null){
+	public function getMultiple($keys, $default = null):iterable{
 		$keys = $this->getData($keys);
 		$this->checkKeyArray($keys);
 
@@ -66,7 +89,7 @@ class Cache implements CacheInterface{
 	}
 
 	/** @inheritdoc */
-	public function setMultiple($values, $ttl = null){
+	public function setMultiple($values, $ttl = null):bool{
 		$values = $this->getData($values);
 
 		foreach($values as $key => $value){
@@ -77,7 +100,7 @@ class Cache implements CacheInterface{
 	}
 
 	/** @inheritdoc */
-	public function deleteMultiple($keys){
+	public function deleteMultiple($keys):bool{
 		$keys = $this->getData($keys);
 		$this->checkKeyArray($keys);
 
@@ -85,7 +108,7 @@ class Cache implements CacheInterface{
 	}
 
 	/** @inheritdoc */
-	public function has($key){
+	public function has($key):bool{
 		$this->checkKey($key);
 
 		return $this->cacheDriver->has($key);
@@ -95,12 +118,15 @@ class Cache implements CacheInterface{
 	 * @param $key
 	 *
 	 * @return void
-	 * @throws \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
+	 * @throws \chillerlan\SimpleCache\InvalidArgumentException
 	 */
-	protected function checkKey($key){
+	protected function checkKey($key):void{
 
 		if(!is_string($key) || empty($key)){
-			throw new SimpleCacheInvalidArgumentException('invalid key');
+			$msg = 'invalid cache key: "'.$key.'"';
+			$this->logger->error($msg);
+
+			throw new InvalidArgumentException($msg);
 		}
 
 	}
@@ -110,7 +136,7 @@ class Cache implements CacheInterface{
 	 *
 	 * @return void
 	 */
-	protected function checkKeyArray(array $keys){
+	protected function checkKeyArray(array $keys):void{
 
 		foreach($keys as $key){
 			$this->checkKey($key);
@@ -122,36 +148,53 @@ class Cache implements CacheInterface{
 	 * @param mixed $data
 	 *
 	 * @return array
-	 * @throws \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
+	 * @throws \chillerlan\SimpleCache\InvalidArgumentException
 	 */
 	protected function getData($data):array{
 
-		if($data instanceof \Traversable){
+		if($data instanceof Traversable){
 			return iterator_to_array($data); // @codeCoverageIgnore
 		}
 		else if(is_array($data)){
 			return $data;
 		}
 
-		throw new SimpleCacheInvalidArgumentException('invalid data');
+		$msg = 'invalid data';
+		$this->logger->error($msg);
+
+		throw new InvalidArgumentException($msg);
 	}
 
 	/**
 	 * @param mixed $ttl
 	 *
 	 * @return int|null
-	 * @throws \chillerlan\SimpleCache\SimpleCacheInvalidArgumentException
+	 * @throws \chillerlan\SimpleCache\InvalidArgumentException
 	 */
-	protected function getTTL($ttl){
+	protected function getTTL($ttl):?int{
 
-		if($ttl instanceof \DateInterval){
-			return (new \DateTime('now'))->add($ttl)->getTimeStamp() - time();
+		if($ttl instanceof DateInterval){
+			return (new DateTime('now'))->add($ttl)->getTimeStamp() - time();
 		}
-		else if(is_int($ttl) || is_null($ttl)){
+		else if(is_int($ttl) || $ttl === null){
 			return $ttl;
 		}
 
-		throw new SimpleCacheInvalidArgumentException('invalid ttl');
+		$msg = 'invalid ttl';
+		$this->logger->error($msg);
+
+		throw new InvalidArgumentException($msg);
+	}
+
+	/**
+	 * @param string $message
+	 *
+	 * @throws \chillerlan\SimpleCache\CacheException
+	 */
+	protected function throwException(string $message){
+		$this->logger->error($message);
+
+		throw new InvalidArgumentException($message);
 	}
 
 }

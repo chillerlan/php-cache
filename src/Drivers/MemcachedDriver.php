@@ -12,7 +12,8 @@
 
 namespace chillerlan\SimpleCache\Drivers;
 
-use chillerlan\SimpleCache\SimpleCacheException;
+use chillerlan\SimpleCache\CacheException;
+use chillerlan\Traits\ImmutableSettingsInterface;
 use Memcached;
 
 class MemcachedDriver extends CacheDriverAbstract{
@@ -25,15 +26,21 @@ class MemcachedDriver extends CacheDriverAbstract{
 	/**
 	 * MemcachedDriver constructor.
 	 *
-	 * @param \Memcached $memcached
+	 * @param \Memcached                                         $memcached
+	 * @param \chillerlan\Traits\ImmutableSettingsInterface|null $options
 	 *
-	 * @throws \chillerlan\SimpleCache\SimpleCacheException
+	 * @throws \chillerlan\SimpleCache\CacheException
 	 */
-	public function __construct(Memcached $memcached){
+	public function __construct(Memcached $memcached, ImmutableSettingsInterface $options = null){
+		parent::__construct($options);
+
 		$this->memcached = $memcached;
 
 		if(empty($this->memcached->getServerList())){
-			throw new SimpleCacheException('no memcache server available');
+			$msg = 'no memcache server available';
+
+			$this->logger->error($msg);
+			throw new CacheException($msg);
 		}
 
 	}

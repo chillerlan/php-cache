@@ -12,6 +12,9 @@
 
 namespace chillerlan\SimpleCache\Drivers;
 
+use chillerlan\SimpleCache\CacheException;
+use chillerlan\Traits\ImmutableSettingsInterface;
+
 class SessionCacheDriver extends CacheDriverAbstract{
 
 	/**
@@ -22,10 +25,22 @@ class SessionCacheDriver extends CacheDriverAbstract{
 	/**
 	 * SessionCacheDriver constructor.
 	 *
-	 * @param string|null $key
+	 * @param \chillerlan\Traits\ImmutableSettingsInterface|null $options
+	 *
+	 * @throws \chillerlan\SimpleCache\CacheException
 	 */
-	public function __construct(string $key = null){
-		$this->key = $key ?? '_session_cache';
+	public function __construct(ImmutableSettingsInterface $options = null){
+		parent::__construct($options);
+
+		$this->key = $this->options->cachekey;
+
+		if(!is_string($this->key) || empty($this->key)){
+			$msg = 'invalid session cache key';
+
+			$this->logger->error($msg);
+			throw new CacheException($msg);
+		}
+
 
 		$_SESSION[$this->key] = [];
 	}

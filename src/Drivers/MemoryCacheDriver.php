@@ -38,7 +38,7 @@ class MemoryCacheDriver extends CacheDriverAbstract{
 	public function set(string $key, $value, int $ttl = null):bool{
 
 		$this->cache[$key] = [
-			'ttl' => $ttl ? time() + $ttl : null,
+			'ttl'     => $ttl ? time() + $ttl : null,
 			'content' => $value,
 		];
 

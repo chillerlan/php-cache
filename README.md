@@ -1,6 +1,6 @@
 # chillerlan/php-cache
 
-A psr/simple-cache implementation for PHP 7+.
+A psr/simple-cache implementation for PHP 7.2+.
 
 [![version][packagist-badge]][packagist]
 [![license][license-badge]][license]
@@ -31,7 +31,7 @@ A psr/simple-cache implementation for PHP 7+.
  - non-persistent: Session, Memory 
 
 ## Requirements
- - **PHP 7+**
+ - **PHP 7.2+**
    - [Memcached](http://php.net/manual/en/book.memcached.php)
    - [Redis](https://github.com/phpredis/phpredis/)
    - [APCU](http://php.net/manual/en/book.apcu.php)
@@ -43,8 +43,8 @@ In case you want to include it elsewhere, just add the following to your *compos
 ```json
 {
 	"require": {
-		"php": ">=7.0.3",
-		"chillerlan/php-cache": "dev-master"
+		"php": ">=7.2.0",
+		"chillerlan/php-cache": "^2.0"
 	}
 }
 ```
@@ -73,10 +73,10 @@ $memcached->addServer('localhost', 11211);
 $cacheDriver = new MemcachedDriver($memcached);
 
 // File
-$cacheDriver = new FileCacheDriver(__DIR__.'/../.cache');
+$cacheDriver = new FileCacheDriver(new CacheOptions(['filestorage' => __DIR__.'/../.cache']));
 
 // Session
-$cacheDriver = new SessionCacheDriver('_session_cache');
+$cacheDriver = new SessionCacheDriver(new CacheOptions(['cachekey' => '_session_cache_test']));
 
 // Memory
 $cacheDriver = new MemoryCacheDriver;

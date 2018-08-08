@@ -12,7 +12,27 @@
 
 namespace chillerlan\SimpleCache\Drivers;
 
-abstract class CacheDriverAbstract implements CacheDriverInterface{
+use chillerlan\SimpleCache\{CacheOptions};
+use chillerlan\Traits\ImmutableSettingsInterface;
+use Psr\Log\{LoggerAwareInterface, LoggerAwareTrait, NullLogger};
+
+abstract class CacheDriverAbstract implements CacheDriverInterface, LoggerAwareInterface{
+	use LoggerAwareTrait;
+
+	/**
+	 * @var \chillerlan\SimpleCache\CacheOptions
+	 */
+	protected $options;
+
+	/**
+	 * CacheDriverAbstract constructor.
+	 *
+	 * @param \chillerlan\Traits\ImmutableSettingsInterface|null $options
+	 */
+	public function __construct(ImmutableSettingsInterface $options = null){
+		$this->options = $options ?? new CacheOptions;
+		$this->logger  = new NullLogger; // logger will be set from the Cache instance
+	}
 
 	/** @inheritdoc */
 	public function has(string $key):bool{

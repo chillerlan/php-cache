@@ -1,8 +1,8 @@
 <?php
 /**
- * Class SimpleCacheException
+ * Class CacheException
  *
- * @filesource   SimpleCacheException.php
+ * @filesource   CacheException.php
  * @created      27.05.2017
  * @package      chillerlan\SimpleCache
  * @author       Smiley <smiley@chillerlan.net>
@@ -12,6 +12,4 @@
 
 namespace chillerlan\SimpleCache;
 
-use Psr\SimpleCache\CacheException;
-
-class SimpleCacheException extends \Exception implements CacheException{}
+class CacheException extends \Exception implements \Psr\SimpleCache\CacheException{}

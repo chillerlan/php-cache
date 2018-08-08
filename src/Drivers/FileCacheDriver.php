@@ -12,7 +12,8 @@
 
 namespace chillerlan\SimpleCache\Drivers;
 
-use chillerlan\SimpleCache\SimpleCacheException;
+use chillerlan\SimpleCache\CacheException;
+use chillerlan\Traits\ImmutableSettingsInterface;
 use stdClass;
 
 class FileCacheDriver extends CacheDriverAbstract{
@@ -25,19 +26,27 @@ class FileCacheDriver extends CacheDriverAbstract{
 	/**
 	 * FileCacheDriver constructor.
 	 *
-	 * @param string $cachedir
+	 * @param \chillerlan\Traits\ImmutableSettingsInterface|null $options
 	 *
-	 * @throws \chillerlan\SimpleCache\SimpleCacheException
+	 * @throws \chillerlan\SimpleCache\CacheException
 	 */
-	public function __construct(string $cachedir){
-		$this->cachedir = $cachedir;
+	public function __construct(ImmutableSettingsInterface $options = null){
+		parent::__construct($options);
 
-		if(!is_dir($cachedir)){
-			throw new SimpleCacheException('invalid cachedir "'.$cachedir.'"');
+		$this->cachedir = $this->options->filestorage;
+
+		if(!is_dir($this->cachedir)){
+			$msg = 'invalid cachedir "'.$this->cachedir.'"';
+
+			$this->logger->error($msg);
+			throw new CacheException($msg);
 		}
 
-		if(!is_writable($cachedir)){
-			throw new SimpleCacheException('cachedir is read-only. permissions?'); // @codeCoverageIgnore
+		if(!is_writable($this->cachedir)){
+			$msg = 'cachedir is read-only. permissions?';
+
+			$this->logger->error($msg);
+			throw new CacheException($msg);
 		}
 
 	}
@@ -52,7 +61,7 @@ class FileCacheDriver extends CacheDriverAbstract{
 			if(!empty($content)){
 				$data = unserialize($content);
 
-				if(is_null($data->ttl) || $data->ttl > time()){
+				if($data->ttl === null || $data->ttl > time()){
 					return $data->content;
 				}
 
@@ -123,6 +132,7 @@ class FileCacheDriver extends CacheDriverAbstract{
 	 * @return string
 	 */
 	protected function filename(string $file):string {
+		// @todo: directory structure /storage/a/ab/file...
 		return $this->cachedir.DIRECTORY_SEPARATOR.hash('sha256', $file);
 	}
 

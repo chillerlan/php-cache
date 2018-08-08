@@ -12,6 +12,7 @@
 
 namespace chillerlan\SimpleCache\Drivers;
 
+use chillerlan\Traits\ImmutableSettingsInterface;
 use Redis;
 
 class RedisDriver extends CacheDriverAbstract{
@@ -24,9 +25,12 @@ class RedisDriver extends CacheDriverAbstract{
 	/**
 	 * RedisDriver constructor.
 	 *
-	 * @param \Redis $redis
+	 * @param \Redis                                             $redis
+	 * @param \chillerlan\Traits\ImmutableSettingsInterface|null $options
 	 */
-	public function __construct(Redis $redis){
+	public function __construct(Redis $redis, ImmutableSettingsInterface $options = null){
+		parent::__construct($options);
+
 		$this->redis = $redis;
 	}
 
@@ -40,7 +44,7 @@ class RedisDriver extends CacheDriverAbstract{
 	/** @inheritdoc */
 	public function set(string $key, $value, int $ttl = null):bool{
 
-		if(is_null($ttl)){
+		if($ttl === null){
 			return $this->redis->set($key, $value);
 		}
 
@@ -74,7 +78,7 @@ class RedisDriver extends CacheDriverAbstract{
 	/** @inheritdoc */
 	public function setMultiple(array $values, int $ttl = null):bool{
 
-		if(is_null($ttl)){
+		if($ttl === null){
 			return $this->redis->msetnx($values);
 		}
 

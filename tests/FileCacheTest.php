@@ -12,22 +12,22 @@
 
 namespace chillerlan\SimpleCacheTest;
 
-use chillerlan\SimpleCache\Drivers\FileCacheDriver;
+use chillerlan\SimpleCache\{CacheOptions, Drivers\FileCacheDriver};
 
 class FileCacheTest extends SimpleCacheTestAbstract{
 
 	protected function setUp(){
-		$this->cacheDriver = new FileCacheDriver(__DIR__.'/../.cache');
+		$this->cacheDriver = new FileCacheDriver(new CacheOptions(['filestorage' => __DIR__.'/../.cache']));
 
 		parent::setUp();
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\CacheException
 	 * @expectedExceptionMessage invalid cachedir "foo"
 	 */
 	public function testCacheDriverInvalidDir(){
-		new FileCacheDriver('foo');
+		new FileCacheDriver(new CacheOptions(['filestorage' => 'foo']));
 	}
 
 }

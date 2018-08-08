@@ -12,12 +12,12 @@
 
 namespace chillerlan\SimpleCacheTest;
 
-use chillerlan\SimpleCache\Drivers\SessionCacheDriver;
+use chillerlan\SimpleCache\{CacheOptions, Drivers\SessionCacheDriver};
 
 class SessionDriverTest extends NonpersistentTestAbstract{
 
 	protected function setUp(){
-		$this->cacheDriver = new SessionCacheDriver('_session_cache_test');
+		$this->cacheDriver = new SessionCacheDriver(new CacheOptions(['cachekey' => '_session_cache_test']));
 
 		parent::setUp();
 	}

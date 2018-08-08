@@ -34,7 +34,7 @@ class MemcachedTest extends SimpleCacheTestAbstract{
 	}
 
 	/**
-	 * @expectedException \chillerlan\SimpleCache\SimpleCacheException
+	 * @expectedException \chillerlan\SimpleCache\CacheException
 	 * @expectedExceptionMessage no memcache server available
 	 */
 	public function testMemcachedDriverNoServer(){

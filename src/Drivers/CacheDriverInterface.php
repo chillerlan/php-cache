@@ -12,6 +12,9 @@
 
 namespace chillerlan\SimpleCache\Drivers;
 
+/**
+ * @method setLogger(\Psr\Log\LoggerInterface $logger)
+ */
 interface CacheDriverInterface{
 
 	/**
