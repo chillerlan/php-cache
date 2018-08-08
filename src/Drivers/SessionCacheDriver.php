@@ -32,7 +32,7 @@ class SessionCacheDriver extends CacheDriverAbstract{
 	public function __construct(ImmutableSettingsInterface $options = null){
 		parent::__construct($options);
 
-		$this->key = $this->options->cachekey;
+		$this->key = $this->options->cacheSessionkey;
 
 		if(!is_string($this->key) || empty($this->key)){
 			$msg = 'invalid session cache key';

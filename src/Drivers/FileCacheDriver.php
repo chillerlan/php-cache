@@ -14,7 +14,7 @@ namespace chillerlan\SimpleCache\Drivers;
 
 use chillerlan\SimpleCache\CacheException;
 use chillerlan\Traits\ImmutableSettingsInterface;
-use stdClass;
+use FilesystemIterator, RecursiveDirectoryIterator, RecursiveIteratorIterator, stdClass;
 
 class FileCacheDriver extends CacheDriverAbstract{
 
@@ -33,7 +33,7 @@ class FileCacheDriver extends CacheDriverAbstract{
 	public function __construct(ImmutableSettingsInterface $options = null){
 		parent::__construct($options);
 
-		$this->cachedir = $this->options->filestorage;
+		$this->cachedir = rtrim($this->options->cacheFilestorage, '/\\').DIRECTORY_SEPARATOR;
 
 		if(!is_dir($this->cachedir)){
 			$msg = 'invalid cachedir "'.$this->cachedir.'"';
@@ -53,7 +53,7 @@ class FileCacheDriver extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function get(string $key, $default = null){
-		$filename = $this->filename($key);
+		$filename = $this->getFilepath($key);
 
 		if(is_file($filename)){
 			$content = file_get_contents($filename);
@@ -75,7 +75,13 @@ class FileCacheDriver extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function set(string $key, $value, int $ttl = null):bool{
-		$filename      = $this->filename($key);
+		$file = $this->getFilepath($key);
+		$dir  = dirname($file);
+
+		if(!is_dir($dir)){
+			mkdir($dir, 0755, true);
+		}
+
 		$data          = new stdClass;
 		$data->ttl     = null;
 		$data->content = $value;
@@ -84,9 +90,9 @@ class FileCacheDriver extends CacheDriverAbstract{
 			$data->ttl = time() + $ttl;
 		}
 
-		file_put_contents($filename, serialize($data));
+		file_put_contents($file, serialize($data));
 
-		if(is_file($filename)){
+		if(is_file($file)){
 			return true;
 		}
 
@@ -95,7 +101,7 @@ class FileCacheDriver extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function delete(string $key):bool{
-		$filename = $this->filename($key);
+		$filename = $this->getFilepath($key);
 
 		if(is_file($filename)){
 			return unlink($filename);
@@ -106,34 +112,31 @@ class FileCacheDriver extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function clear():bool{
-		$dir = scandir($this->cachedir);
+		$iterator = new RecursiveDirectoryIterator($this->cachedir, FilesystemIterator::CURRENT_AS_PATHNAME|FilesystemIterator::SKIP_DOTS);
+		$return   = [];
 
-		if(is_array($dir) && !empty($dir)){
-			$return = [];
+		foreach(new RecursiveIteratorIterator($iterator) as $path){
 
-			foreach($dir as $file){
-				$path = $this->cachedir.DIRECTORY_SEPARATOR.$file;
-
-				if(is_file($path) && strlen($file) === 64){
-					$return[] = unlink($path);
-				}
-
+			// skip files the parent directory - cache files are only under /a/ab/[hash]
+			if(strpos(str_replace($this->cachedir, '', $path), DIRECTORY_SEPARATOR) === false){
+				continue;
 			}
 
-			return $this->checkReturn($return);
+			$return[] = unlink($path);
 		}
 
-		return true; // @codeCoverageIgnore
+		return $this->checkReturn($return); // @codeCoverageIgnore
 	}
 
 	/**
-	 * @param string $file
+	 * @param string $key
 	 *
 	 * @return string
 	 */
-	protected function filename(string $file):string {
-		// @todo: directory structure /storage/a/ab/file...
-		return $this->cachedir.DIRECTORY_SEPARATOR.hash('sha256', $file);
+	protected function getFilepath(string $key):string{
+		$h = hash('sha256', $key);
+
+		return $this->cachedir.$h[0].DIRECTORY_SEPARATOR.$h[0].$h[1].DIRECTORY_SEPARATOR.$h;
 	}
 
 }

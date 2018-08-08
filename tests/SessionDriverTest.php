@@ -17,7 +17,7 @@ use chillerlan\SimpleCache\{CacheOptions, Drivers\SessionCacheDriver};
 class SessionDriverTest extends NonpersistentTestAbstract{
 
 	protected function setUp(){
-		$this->cacheDriver = new SessionCacheDriver(new CacheOptions(['cachekey' => '_session_cache_test']));
+		$this->cacheDriver = new SessionCacheDriver(new CacheOptions(['cacheSessionkey' => '_session_cache_test']));
 
 		parent::setUp();
 	}
