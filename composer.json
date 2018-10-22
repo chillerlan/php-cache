@@ -4,6 +4,7 @@
 	"homepage": "https://github.com/chillerlan/php-cache",
 	"license": "MIT",
 	"type": "library",
+	"minimum-stability": "stable",
 	"keywords": [
 		"cache", "psr-16", "php7"
 	],
@@ -18,16 +19,15 @@
 		"issues": "https://github.com/chillerlan/php-cache/issues",
 		"source": "https://github.com/chillerlan/php-cache"
 	},
-	"minimum-stability": "stable",
 	"require": {
 		"php": "^7.2",
 		"psr/log": "^1.0",
 		"psr/simple-cache": "^1.0",
-		"chillerlan/php-traits": "^2.0"
+		"chillerlan/php-settings-container": "^1.0"
 	},
 	"require-dev": {
-		"chillerlan/php-log": "^2.0",
-		"phpunit/phpunit": "^7.3"
+		"chillerlan/php-log": "^3.0",
+		"phpunit/phpunit": "^7.4"
 	},
 	"autoload": {
 		"psr-4": {

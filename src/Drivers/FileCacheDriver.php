@@ -13,7 +13,7 @@
 namespace chillerlan\SimpleCache\Drivers;
 
 use chillerlan\SimpleCache\CacheException;
-use chillerlan\Traits\ImmutableSettingsInterface;
+use chillerlan\Settings\SettingsContainerInterface;
 use FilesystemIterator, RecursiveDirectoryIterator, RecursiveIteratorIterator, stdClass;
 
 class FileCacheDriver extends CacheDriverAbstract{
@@ -26,11 +26,11 @@ class FileCacheDriver extends CacheDriverAbstract{
 	/**
 	 * FileCacheDriver constructor.
 	 *
-	 * @param \chillerlan\Traits\ImmutableSettingsInterface|null $options
+	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
 	 *
 	 * @throws \chillerlan\SimpleCache\CacheException
 	 */
-	public function __construct(ImmutableSettingsInterface $options = null){
+	public function __construct(SettingsContainerInterface $options = null){
 		parent::__construct($options);
 
 		$this->cachedir = rtrim($this->options->cacheFilestorage, '/\\').DIRECTORY_SEPARATOR;

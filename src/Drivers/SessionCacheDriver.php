@@ -13,7 +13,7 @@
 namespace chillerlan\SimpleCache\Drivers;
 
 use chillerlan\SimpleCache\CacheException;
-use chillerlan\Traits\ImmutableSettingsInterface;
+use chillerlan\Settings\SettingsContainerInterface;
 
 class SessionCacheDriver extends CacheDriverAbstract{
 
@@ -25,11 +25,11 @@ class SessionCacheDriver extends CacheDriverAbstract{
 	/**
 	 * SessionCacheDriver constructor.
 	 *
-	 * @param \chillerlan\Traits\ImmutableSettingsInterface|null $options
+	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
 	 *
 	 * @throws \chillerlan\SimpleCache\CacheException
 	 */
-	public function __construct(ImmutableSettingsInterface $options = null){
+	public function __construct(SettingsContainerInterface $options = null){
 		parent::__construct($options);
 
 		$this->key = $this->options->cacheSessionkey;

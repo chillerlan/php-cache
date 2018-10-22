@@ -12,12 +12,12 @@
 
 namespace chillerlan\SimpleCache;
 
-use chillerlan\Traits\ImmutableSettingsAbstract;
+use chillerlan\Settings\SettingsContainerAbstract;
 
 /**
  * @property string $cacheFilestorage
  * @property string $cacheSessionkey
  */
-class CacheOptions extends ImmutableSettingsAbstract{
+class CacheOptions extends SettingsContainerAbstract{
 	use CacheOptionsTrait;
 }
