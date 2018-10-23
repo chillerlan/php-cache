@@ -21,7 +21,7 @@ class MemoryCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function get($key, $default = null){
-		$this->checkKey($key);
+		$key = $this->checkKey($key);
 
 		if(isset($this->cache[$key])){
 
@@ -37,11 +37,9 @@ class MemoryCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function set($key, $value, $ttl = null):bool{
-		$this->checkKey($key);
-
 		$ttl = $this->getTTL($ttl);
 
-		$this->cache[$key] = [
+		$this->cache[$this->checkKey($key)] = [
 			'ttl'     => $ttl ? time() + $ttl : null,
 			'content' => $value,
 		];
@@ -51,9 +49,7 @@ class MemoryCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function delete($key):bool{
-		$this->checkKey($key);
-
-		unset($this->cache[$key]);
+		unset($this->cache[$this->checkKey($key)]);
 
 		return true;
 	}

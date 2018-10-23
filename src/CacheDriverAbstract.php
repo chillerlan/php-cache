@@ -37,7 +37,7 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 
 	/** @inheritdoc */
 	public function has($key):bool{
-		return (bool)$this->get($key);
+		return $this->get($key) !== null;
 	}
 
 	/** @inheritdoc */
@@ -74,12 +74,12 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	}
 
 	/**
-	 * @param $key
+	 * @param string|mixed $key
 	 *
-	 * @return void
+	 * @return string
 	 * @throws \Psr\SimpleCache\InvalidArgumentException
 	 */
-	protected function checkKey($key):void{
+	protected function checkKey($key):string{
 
 		if(!is_string($key) || empty($key)){
 			$msg = 'invalid cache key: "'.$key.'"';
@@ -88,6 +88,7 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 			throw new InvalidArgumentException($msg);
 		}
 
+		return $key;
 	}
 
 	/**
@@ -133,9 +134,9 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	protected function getTTL($ttl):?int{
 
 		if($ttl instanceof DateInterval){
-			return (new DateTime('now'))->add($ttl)->getTimeStamp() - time();
+			return (new DateTime)->add($ttl)->getTimeStamp() - time();
 		}
-		else if(is_int($ttl) || $ttl === null){
+		else if((is_int($ttl) && $ttl > 0) || $ttl === null){
 			return $ttl;
 		}
 

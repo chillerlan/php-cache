@@ -52,9 +52,7 @@ class FileCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function get($key, $default = null){
-		$this->checkKey($key);
-
-		$filename = $this->getFilepath($key);
+		$filename = $this->getFilepath($this->checkKey($key));
 
 		if(is_file($filename)){
 			$content = file_get_contents($filename);
@@ -76,10 +74,9 @@ class FileCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function set($key, $value, $ttl = null):bool{
-		$this->checkKey($key);
 		$ttl = $this->getTTL($ttl);
 
-		$file = $this->getFilepath($key);
+		$file = $this->getFilepath($this->checkKey($key));
 		$dir  = dirname($file);
 
 		if(!is_dir($dir)){
@@ -105,9 +102,7 @@ class FileCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function delete($key):bool{
-		$this->checkKey($key);
-
-		$filename = $this->getFilepath($key);
+		$filename = $this->getFilepath($this->checkKey($key));
 
 		if(is_file($filename)){
 			return unlink($filename);
@@ -123,7 +118,7 @@ class FileCache extends CacheDriverAbstract{
 
 		foreach(new RecursiveIteratorIterator($iterator) as $path){
 
-			// skip files the parent directory - cache files are only under /a/ab/[hash]
+			// skip files in the parent directory - cache files are only under /a/ab/[hash]
 			if(strpos(str_replace($this->cachedir, '', $path), DIRECTORY_SEPARATOR) === false){
 				continue;
 			}

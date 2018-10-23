@@ -46,25 +46,23 @@ class MemcachedCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function get($key, $default = null){
-		$this->checkKey($key);
+		$value = $this->memcached->get($this->checkKey($key));
 
-		$value = $this->memcached->get($key);
+		if($value !== false){
+			return $value;
+		}
 
-		return $value ?: $default;
+		return $default;
 	}
 
 	/** @inheritdoc */
 	public function set($key, $value, $ttl = null):bool{
-		$this->checkKey($key);
-
-		return $this->memcached->set($key, $value, $this->getTTL($ttl));
+		return $this->memcached->set($this->checkKey($key), $value, $this->getTTL($ttl));
 	}
 
 	/** @inheritdoc */
 	public function delete($key):bool{
-		$this->checkKey($key);
-
-		return $this->memcached->delete($key);
+		return $this->memcached->delete($this->checkKey($key));
 	}
 
 	/** @inheritdoc */

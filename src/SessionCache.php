@@ -46,7 +46,7 @@ class SessionCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function get($key, $default = null){
-		$this->checkKey($key);
+		$key = $this->checkKey($key);
 
 		if(isset($_SESSION[$this->key][$key])){
 
@@ -62,10 +62,9 @@ class SessionCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function set($key, $value, $ttl = null):bool{
-		$this->checkKey($key);
 		$ttl = $this->getTTL($ttl);
 
-		$_SESSION[$this->key][$key] = [
+		$_SESSION[$this->key][$this->checkKey($key)] = [
 			'ttl' => $ttl ? time() + $ttl : null,
 			'content' => $value,
 		];
@@ -75,9 +74,7 @@ class SessionCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function delete($key):bool{
-		$this->checkKey($key);
-
-		unset($_SESSION[$this->key][$key]);
+		unset($_SESSION[$this->key][$this->checkKey($key)]);
 
 		return true;
 	}
