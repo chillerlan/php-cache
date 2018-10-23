@@ -1,21 +1,20 @@
 <?php
 /**
- * Class SessionCacheDriver
+ * Class SessionCache
  *
- * @filesource   SessionCacheDriver.php
+ * @filesource   SessionCache.php
  * @created      27.05.2017
- * @package      chillerlan\SimpleCache\Drivers
+ * @package      chillerlan\SimpleCache
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2017 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\SimpleCache\Drivers;
+namespace chillerlan\SimpleCache;
 
-use chillerlan\SimpleCache\CacheException;
 use chillerlan\Settings\SettingsContainerInterface;
 
-class SessionCacheDriver extends CacheDriverAbstract{
+class SessionCache extends CacheDriverAbstract{
 
 	/**
 	 * @var string
@@ -23,7 +22,7 @@ class SessionCacheDriver extends CacheDriverAbstract{
 	protected $key;
 
 	/**
-	 * SessionCacheDriver constructor.
+	 * SessionCache constructor.
 	 *
 	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
 	 *
@@ -46,7 +45,8 @@ class SessionCacheDriver extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function get(string $key, $default = null){
+	public function get($key, $default = null){
+		$this->checkKey($key);
 
 		if(isset($_SESSION[$this->key][$key])){
 
@@ -55,14 +55,15 @@ class SessionCacheDriver extends CacheDriverAbstract{
 			}
 
 			unset($_SESSION[$this->key][$key]);
-
 		}
 
 		return $default;
 	}
 
 	/** @inheritdoc */
-	public function set(string $key, $value, int $ttl = null):bool{
+	public function set($key, $value, $ttl = null):bool{
+		$this->checkKey($key);
+		$ttl = $this->getTTL($ttl);
 
 		$_SESSION[$this->key][$key] = [
 			'ttl' => $ttl ? time() + $ttl : null,
@@ -73,7 +74,9 @@ class SessionCacheDriver extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function delete(string $key):bool{
+	public function delete($key):bool{
+		$this->checkKey($key);
+
 		unset($_SESSION[$this->key][$key]);
 
 		return true;

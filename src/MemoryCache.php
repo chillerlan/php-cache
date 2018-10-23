@@ -1,18 +1,18 @@
 <?php
 /**
- * Class MemoryCacheDriver
+ * Class MemoryCache
  *
- * @filesource   MemoryCacheDriver.php
+ * @filesource   MemoryCache.php
  * @created      27.05.2017
- * @package      chillerlan\SimpleCache\Drivers
+ * @package      chillerlan\SimpleCache
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2017 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\SimpleCache\Drivers;
+namespace chillerlan\SimpleCache;
 
-class MemoryCacheDriver extends CacheDriverAbstract{
+class MemoryCache extends CacheDriverAbstract{
 
 	/**
 	 * @var array
@@ -20,7 +20,8 @@ class MemoryCacheDriver extends CacheDriverAbstract{
 	protected $cache = [];
 
 	/** @inheritdoc */
-	public function get(string $key, $default = null){
+	public function get($key, $default = null){
+		$this->checkKey($key);
 
 		if(isset($this->cache[$key])){
 
@@ -35,7 +36,10 @@ class MemoryCacheDriver extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function set(string $key, $value, int $ttl = null):bool{
+	public function set($key, $value, $ttl = null):bool{
+		$this->checkKey($key);
+
+		$ttl = $this->getTTL($ttl);
 
 		$this->cache[$key] = [
 			'ttl'     => $ttl ? time() + $ttl : null,
@@ -46,7 +50,9 @@ class MemoryCacheDriver extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function delete(string $key):bool{
+	public function delete($key):bool{
+		$this->checkKey($key);
+
 		unset($this->cache[$key]);
 
 		return true;

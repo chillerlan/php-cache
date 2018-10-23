@@ -12,14 +12,13 @@
 
 namespace chillerlan\SimpleCacheTest;
 
-use chillerlan\SimpleCache\Cache;
-use chillerlan\SimpleCache\Drivers\CacheDriverInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\SimpleCache\CacheInterface;
 
 abstract class SimpleCacheTestAbstract extends TestCase{
 
 	/**
-	 * @var \chillerlan\SimpleCache\Drivers\CacheDriverInterface
+	 * @var \chillerlan\SimpleCache\CacheDriverInterface
 	 */
 	protected $cacheDriver;
 
@@ -28,13 +27,13 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	 */
 	protected $cache;
 
-	protected function setUp(){
-		$this->cache = new Cache($this->cacheDriver);
-	}
+#	protected function setUp(){
+#		$this->cache = new Cache($this->cacheDriver);
+#	}
 
 	public function testInstance(){
-		$this->assertInstanceOf(CacheDriverInterface::class, $this->cacheDriver);
-		$this->assertInstanceOf(Cache::class, $this->cache);
+#		$this->assertInstanceOf(CacheDriverInterface::class, $this->cacheDriver);
+		$this->assertInstanceOf(CacheInterface::class, $this->cache);
 	}
 
 	public function testSet(){

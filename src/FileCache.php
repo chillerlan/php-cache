@@ -1,22 +1,21 @@
 <?php
 /**
- * Class FileCacheDriver
+ * Class FileCache
  *
- * @filesource   FileCacheDriver.php
+ * @filesource   FileCache.php
  * @created      25.05.2017
- * @package      chillerlan\SimpleCache\Drivers
+ * @package      chillerlan\SimpleCache
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2017 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\SimpleCache\Drivers;
+namespace chillerlan\SimpleCache;
 
-use chillerlan\SimpleCache\CacheException;
 use chillerlan\Settings\SettingsContainerInterface;
 use FilesystemIterator, RecursiveDirectoryIterator, RecursiveIteratorIterator, stdClass;
 
-class FileCacheDriver extends CacheDriverAbstract{
+class FileCache extends CacheDriverAbstract{
 
 	/**
 	 * @var string
@@ -24,7 +23,7 @@ class FileCacheDriver extends CacheDriverAbstract{
 	protected $cachedir;
 
 	/**
-	 * FileCacheDriver constructor.
+	 * FileCache constructor.
 	 *
 	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
 	 *
@@ -52,7 +51,9 @@ class FileCacheDriver extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function get(string $key, $default = null){
+	public function get($key, $default = null){
+		$this->checkKey($key);
+
 		$filename = $this->getFilepath($key);
 
 		if(is_file($filename)){
@@ -74,7 +75,10 @@ class FileCacheDriver extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function set(string $key, $value, int $ttl = null):bool{
+	public function set($key, $value, $ttl = null):bool{
+		$this->checkKey($key);
+		$ttl = $this->getTTL($ttl);
+
 		$file = $this->getFilepath($key);
 		$dir  = dirname($file);
 
@@ -100,7 +104,9 @@ class FileCacheDriver extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function delete(string $key):bool{
+	public function delete($key):bool{
+		$this->checkKey($key);
+
 		$filename = $this->getFilepath($key);
 
 		if(is_file($filename)){

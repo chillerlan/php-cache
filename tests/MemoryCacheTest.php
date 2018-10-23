@@ -12,12 +12,12 @@
 
 namespace chillerlan\SimpleCacheTest;
 
-use chillerlan\SimpleCache\Drivers\MemoryCacheDriver;
+use chillerlan\SimpleCache\MemoryCache;
 
 class MemoryCacheTest extends NonpersistentTestAbstract{
 
 	protected function setUp(){
-		$this->cacheDriver = new MemoryCacheDriver;
+		$this->cache = new MemoryCache;
 
 		parent::setUp();
 	}

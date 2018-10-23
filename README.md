@@ -64,22 +64,22 @@ Just invoke a `Cache` instance with the desired `CacheDriverInterface` like so:
 $redis = new Redis();
 $redis->pconnect('127.0.0.1', 6379);
 		
-$cacheDriver = new RedisDriver($redis);
+$cacheDriver = new RedisCache($redis);
 
 // Memcached
 $memcached = new Memcached('test');
 $memcached->addServer('localhost', 11211);
 
-$cacheDriver = new MemcachedDriver($memcached);
+$cacheDriver = new MemcachedCache($memcached);
 
 // File
-$cacheDriver = new FileCacheDriver(new CacheOptions(['filestorage' => __DIR__.'/../.cache']));
+$cacheDriver = new FileCache(new CacheOptions(['filestorage' => __DIR__.'/../.cache']));
 
 // Session
-$cacheDriver = new SessionCacheDriver(new CacheOptions(['cachekey' => '_session_cache_test']));
+$cacheDriver = new SessionCache(new CacheOptions(['cachekey' => '_session_cache_test']));
 
 // Memory
-$cacheDriver = new MemoryCacheDriver;
+$cacheDriver = new MemoryCache;
 
 // load the cache instance
 $cache = new Cache($cacheDriver);

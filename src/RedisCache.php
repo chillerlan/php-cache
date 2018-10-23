@@ -1,21 +1,21 @@
 <?php
 /**
- * Class RedisDriver
+ * Class RedisCache
  *
- * @filesource   RedisDriver.php
+ * @filesource   RedisCache.php
  * @created      27.05.2017
- * @package      chillerlan\SimpleCache\Drivers
+ * @package      chillerlan\SimpleCache
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2017 Smiley
  * @license      MIT
  */
 
-namespace chillerlan\SimpleCache\Drivers;
+namespace chillerlan\SimpleCache;
 
-use chillerlan\Traits\ImmutableSettingsInterface;
+use chillerlan\Settings\SettingsContainerInterface;
 use Redis;
 
-class RedisDriver extends CacheDriverAbstract{
+class RedisCache extends CacheDriverAbstract{
 
 	/**
 	 * @var \Redis
@@ -23,26 +23,35 @@ class RedisDriver extends CacheDriverAbstract{
 	protected $redis;
 
 	/**
-	 * RedisDriver constructor.
+	 * RedisCache constructor.
 	 *
 	 * @param \Redis                                             $redis
-	 * @param \chillerlan\Traits\ImmutableSettingsInterface|null $options
+	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
 	 */
-	public function __construct(Redis $redis, ImmutableSettingsInterface $options = null){
+	public function __construct(Redis $redis, SettingsContainerInterface $options = null){
 		parent::__construct($options);
 
 		$this->redis = $redis;
 	}
 
 	/** @inheritdoc */
-	public function get(string $key, $default = null){
+	public function get($key, $default = null){
+		$this->checkKey($key);
+
 		$value = $this->redis->get($key);
 
-		return $value ? $value : $default;
+		if($value !== false){
+			return $value;
+		}
+
+		return $default;
 	}
 
 	/** @inheritdoc */
-	public function set(string $key, $value, int $ttl = null):bool{
+	public function set($key, $value, $ttl = null):bool{
+		$this->checkKey($key);
+
+		$ttl = $this->getTTL($ttl);
 
 		if($ttl === null){
 			return $this->redis->set($key, $value);
@@ -52,7 +61,9 @@ class RedisDriver extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function delete(string $key):bool{
+	public function delete($key):bool{
+		$this->checkKey($key);
+
 		return (bool)$this->redis->delete($key);
 	}
 
@@ -62,7 +73,11 @@ class RedisDriver extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function getMultiple(array $keys, $default = null):array{
+	public function getMultiple($keys, $default = null):array{
+		$keys = $this->getData($keys);
+
+		$this->checkKeyArray($keys);
+
 		// scary
 		$values = array_combine($keys, $this->redis->mget($keys));
 
@@ -76,9 +91,13 @@ class RedisDriver extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function setMultiple(array $values, int $ttl = null):bool{
+	public function setMultiple($values, $ttl = null):bool{
+		$values = $this->getData($values);
+		$ttl    = $this->getTTL($ttl);
 
 		if($ttl === null){
+			$this->checkKeyArray(array_keys($values));
+
 			return $this->redis->msetnx($values);
 		}
 
@@ -92,7 +111,12 @@ class RedisDriver extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function deleteMultiple(array $keys):bool{
+	public function deleteMultiple($keys):bool{
+		$keys = $this->getData($keys);
+
+		$this->checkKeyArray($keys);
+
 		return (bool)$this->redis->delete($keys);
 	}
+
 }

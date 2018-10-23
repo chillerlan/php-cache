@@ -12,7 +12,7 @@
 
 namespace chillerlan\SimpleCacheTest;
 
-use chillerlan\SimpleCache\Drivers\APCUDriver;
+use chillerlan\SimpleCache\APCUCache;
 
 class APCUTest extends SimpleCacheTestAbstract{
 
@@ -24,7 +24,7 @@ class APCUTest extends SimpleCacheTestAbstract{
 			return $this;
 		}
 
-		$this->cacheDriver = new APCUDriver;
+		$this->cache = new APCUCache;
 
 		parent::setUp();
 	}

@@ -12,7 +12,7 @@
 
 namespace chillerlan\SimpleCacheTest;
 
-use chillerlan\SimpleCache\Drivers\RedisDriver;
+use chillerlan\SimpleCache\RedisCache;
 use Redis;
 
 class RedisTest extends SimpleCacheTestAbstract{
@@ -32,7 +32,7 @@ class RedisTest extends SimpleCacheTestAbstract{
 			$redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_IGBINARY);
 		}
 
-		$this->cacheDriver = new RedisDriver($redis);
+		$this->cache = new RedisCache($redis);
 
 		parent::setUp();
 	}
