@@ -40,11 +40,13 @@ A psr/simple-cache implementation for PHP 7.2+.
 ### Installation using [composer](https://getcomposer.org)
 You can simply clone the repo and run `composer install` in the root directory. 
 In case you want to include it elsewhere, just add the following to your *composer.json*:
+
+(note: replace `dev-master` with a [version boundary](https://getcomposer.org/doc/articles/versions.md))
 ```json
 {
 	"require": {
 		"php": ">=7.2.0",
-		"chillerlan/php-cache": "^2.0"
+		"chillerlan/php-cache": "dev-master"
 	}
 }
 ```
@@ -58,32 +60,31 @@ Download the desired version of the package from [master](https://github.com/chi
 Profit!
 
 ### Usage
-Just invoke a `Cache` instance with the desired `CacheDriverInterface` like so:
+Just invoke a cache instance with the desired `CacheInterface` like so:
 ```php
 // Redis
-$redis = new Redis();
+$redis = new Redis;
 $redis->pconnect('127.0.0.1', 6379);
 		
-$cacheDriver = new RedisCache($redis);
+$cache = new RedisCache($redis);
 
 // Memcached
-$memcached = new Memcached('test');
+$memcached = new Memcached('myCacheInstance');
 $memcached->addServer('localhost', 11211);
 
-$cacheDriver = new MemcachedCache($memcached);
+$cache = new MemcachedCache($memcached);
+
+// APCU
+$cache = new APCUCache;
 
 // File
-$cacheDriver = new FileCache(new CacheOptions(['filestorage' => __DIR__.'/../.cache']));
+$cache = new FileCache(new CacheOptions(['filestorage' => __DIR__.'/../.cache']));
 
 // Session
-$cacheDriver = new SessionCache(new CacheOptions(['cachekey' => '_session_cache_test']));
+$cache = new SessionCache(new CacheOptions(['cachekey' => '_my_session_cache']));
 
 // Memory
-$cacheDriver = new MemoryCache;
-
-// load the cache instance
-$cache = new Cache($cacheDriver);
-
+$cache = new MemoryCache;
 ```
 
 #### Methods
