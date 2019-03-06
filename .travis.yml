@@ -1,5 +1,10 @@
 language: php
 
+services:
+  - memcached
+  - redis-server
+  - apcu
+
 matrix:
   include:
   - php: 7.2
@@ -7,11 +12,6 @@ matrix:
   - php: nightly
   allow_failures:
   - php: nightly
-
-services:
-  - memcached
-  - redis-server
-  - apcu
 
 install: travis_retry composer install --no-interaction --prefer-source
 
