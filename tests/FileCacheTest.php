@@ -40,7 +40,7 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 		}
 
 		$this->expectException(CacheException::class);
-		$this->expectExceptionMessage('invalid cachedir');
+		$this->expectExceptionMessage('cachedir is read-only. permissions?');
 
 		$dir = __DIR__.'/writetest/';
 
