@@ -14,6 +14,7 @@ namespace chillerlan\SimpleCacheTest;
 
 use chillerlan\SimpleCache\MemcachedCache;
 use Memcached;
+use Psr\SimpleCache\CacheException;
 
 class MemcachedTest extends SimpleCacheTestAbstract{
 
@@ -33,11 +34,10 @@ class MemcachedTest extends SimpleCacheTestAbstract{
 #		parent::setUp();
 	}
 
-	/**
-	 * @expectedException \chillerlan\SimpleCache\CacheException
-	 * @expectedExceptionMessage no memcache server available
-	 */
-	public function testMemcachedDriverNoServer(){
+	public function testMemcachedDriverNoServerException(){
+		$this->expectException(CacheException::class);
+		$this->expectExceptionMessage('no memcache server available');
+
 		new MemcachedCache(new Memcached);
 	}
 

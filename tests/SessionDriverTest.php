@@ -13,6 +13,7 @@
 namespace chillerlan\SimpleCacheTest;
 
 use chillerlan\SimpleCache\{CacheOptions, SessionCache};
+use Psr\SimpleCache\CacheException;
 
 class SessionDriverTest extends NonpersistentTestAbstract{
 
@@ -22,4 +23,10 @@ class SessionDriverTest extends NonpersistentTestAbstract{
 #		parent::setUp();
 	}
 
+	public function testEmptyKeyException(){
+		$this->expectException(CacheException::class);
+		$this->expectExceptionMessage('invalid session cache key');
+
+		new SessionCache(new CacheOptions(['cacheSessionkey' => '']));
+	}
 }

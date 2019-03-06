@@ -25,11 +25,28 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 #		parent::setUp();
 	}
 
-	public function testCacheDriverInvalidDir(){
+	public function testFileCacheInvalidDirException(){
 		$this->expectException(CacheException::class);
 		$this->expectExceptionMessage('invalid cachedir');
 
 		new FileCache(new CacheOptions(['cacheFilestorage' => 'foo']));
+	}
+
+	public function testFileCacheDirnotWritableException(){
+
+		if(PHP_OS_FAMILY === 'Windows'){
+			$this->markTestSkipped('Windows');
+			return;
+		}
+
+		$this->expectException(CacheException::class);
+		$this->expectExceptionMessage('invalid cachedir');
+
+		$dir = __DIR__.'/writetest/';
+
+		mkdir($dir, 0000);
+
+		new FileCache(new CacheOptions(['cacheFilestorage' => $dir]));
 	}
 
 }

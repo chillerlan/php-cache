@@ -53,14 +53,14 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->assertFalse($this->cache->has('oh'));
 	}
 
-	public function testSetInvalidTTL(){
+	public function testSetInvalidTTLException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid ttl');
 
 		$this->cache->set('.', '', new \stdClass);
 	}
 
-	public function testSetInvalidKey(){
+	public function testSetInvalidKeyException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
@@ -73,7 +73,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->assertSame('default', $this->cache->get('foo', 'default'));
 	}
 
-	public function testGetInvalidKey(){
+	public function testGetInvalidKeyException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
@@ -84,7 +84,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->assertTrue($this->cache->has('hello'));
 	}
 
-	public function testHasInvalidKey(){
+	public function testHasInvalidKeyException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
@@ -96,7 +96,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->assertFalse($this->cache->delete('hello'));
 	}
 
-	public function testDeleteInvalidKey(){
+	public function testDeleteInvalidKeyException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
@@ -117,21 +117,21 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->assertSame(['k1ttl' => null, 'k2ttl' => null], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
 	}
 
-	public function testSetMultipleInvalidTTL(){
+	public function testSetMultipleInvalidTTLException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid ttl');
 
 		$this->cache->setMultiple(['.' => ''], new \stdClass);
 	}
 
-	public function testSetMultipleInvalidData(){
+	public function testSetMultipleInvalidDataException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid data');
 
 		$this->cache->setMultiple('foo');
 	}
 
-	public function testSetMultipleInvalidKey(){
+	public function testSetMultipleInvalidKeyException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "0"');
 
@@ -142,14 +142,14 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->assertSame(['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3'], $this->cache->getMultiple(['k1', 'k2', 'k3']));
 	}
 
-	public function testGetMultipleInvalidData(){
+	public function testGetMultipleInvalidDataException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid data');
 
 		$this->cache->getMultiple('foo');
 	}
 
-	public function testGetMultipleInvalidKey(){
+	public function testGetMultipleInvalidKeyException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
@@ -163,14 +163,14 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->assertTrue($this->cache->has('k2'));
 	}
 
-	public function testDeleteMultipleInvalidData(){
+	public function testDeleteMultipleInvalidDataException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid data');
 
 		$this->cache->deleteMultiple('foo');
 	}
 
-	public function testDeleteMultipleInvalidKey(){
+	public function testDeleteMultipleInvalidKeyException(){
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
