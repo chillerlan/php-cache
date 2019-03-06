@@ -17,12 +17,12 @@ use Redis;
 
 class RedisTest extends SimpleCacheTestAbstract{
 
-	protected function setUp(){
+	protected function setUp():void{
 
 		if(!extension_loaded('redis')){
 			$this->markTestSkipped('Redis not installed/enabled');
 
-			return $this;
+			return;
 		}
 
 		$redis = new Redis();
@@ -34,7 +34,7 @@ class RedisTest extends SimpleCacheTestAbstract{
 
 		$this->cache = new RedisCache($redis);
 
-		parent::setUp();
+#		parent::setUp();
 	}
 
 }

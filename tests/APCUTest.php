@@ -16,17 +16,17 @@ use chillerlan\SimpleCache\APCUCache;
 
 class APCUTest extends SimpleCacheTestAbstract{
 
-	protected function setUp(){
+	protected function setUp():void{
 
 		if(!extension_loaded('apcu')){
 			$this->markTestSkipped('APCU not installed/enabled');
 
-			return $this;
+			return;
 		}
 
 		$this->cache = new APCUCache;
 
-		parent::setUp();
+#		parent::setUp();
 	}
 
 	public function testSetTTL(){

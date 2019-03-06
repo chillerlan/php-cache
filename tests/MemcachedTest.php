@@ -17,12 +17,12 @@ use Memcached;
 
 class MemcachedTest extends SimpleCacheTestAbstract{
 
-	protected function setUp(){
+	protected function setUp():void{
 
 		if(!extension_loaded('memcached')){
 			$this->markTestSkipped('Memcached not installed/enabled');
 
-			return $this;
+			return;
 		}
 
 		$memcached = new Memcached('test');
@@ -30,7 +30,7 @@ class MemcachedTest extends SimpleCacheTestAbstract{
 
 		$this->cache = new MemcachedCache($memcached);
 
-		parent::setUp();
+#		parent::setUp();
 	}
 
 	/**

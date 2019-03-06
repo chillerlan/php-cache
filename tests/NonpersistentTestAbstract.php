@@ -1,5 +1,6 @@
 <?php
 /**
+ * Class NonpersistentTestAbstract
  *
  * @filesource   NonpersistentTestAbstract.php
  * @created      27.05.2017
@@ -11,9 +12,6 @@
 
 namespace chillerlan\SimpleCacheTest;
 
-/**
- * Class NonpersistentTestAbstract
- */
 abstract class NonpersistentTestAbstract extends SimpleCacheTestAbstract{
 
 	public function testGet(){

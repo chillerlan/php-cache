@@ -16,10 +16,10 @@ use chillerlan\SimpleCache\{CacheOptions, SessionCache};
 
 class SessionDriverTest extends NonpersistentTestAbstract{
 
-	protected function setUp(){
+	protected function setUp():void{
 		$this->cache = new SessionCache(new CacheOptions(['cacheSessionkey' => '_session_cache_test']));
 
-		parent::setUp();
+#		parent::setUp();
 	}
 
 }
