@@ -14,6 +14,7 @@ namespace chillerlan\SimpleCache;
 
 use chillerlan\Settings\SettingsContainerInterface;
 use Memcached;
+use Psr\Log\LoggerInterface;
 
 class MemcachedCache extends CacheDriverAbstract{
 
@@ -27,11 +28,12 @@ class MemcachedCache extends CacheDriverAbstract{
 	 *
 	 * @param \Memcached                                           $memcached
 	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
+	 * @param \Psr\Log\LoggerInterface|null                        $logger
 	 *
 	 * @throws \chillerlan\SimpleCache\CacheException
 	 */
-	public function __construct(Memcached $memcached, SettingsContainerInterface $options = null){
-		parent::__construct($options);
+	public function __construct(Memcached $memcached, SettingsContainerInterface $options = null, LoggerInterface $logger = null){
+		parent::__construct($options, $logger);
 
 		$this->memcached = $memcached;
 

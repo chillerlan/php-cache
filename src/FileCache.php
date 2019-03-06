@@ -14,6 +14,7 @@ namespace chillerlan\SimpleCache;
 
 use chillerlan\Settings\SettingsContainerInterface;
 use FilesystemIterator, RecursiveDirectoryIterator, RecursiveIteratorIterator, stdClass;
+use Psr\Log\LoggerInterface;
 
 class FileCache extends CacheDriverAbstract{
 
@@ -26,11 +27,12 @@ class FileCache extends CacheDriverAbstract{
 	 * FileCache constructor.
 	 *
 	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
+	 * @param \Psr\Log\LoggerInterface|null                        $logger
 	 *
 	 * @throws \chillerlan\SimpleCache\CacheException
 	 */
-	public function __construct(SettingsContainerInterface $options = null){
-		parent::__construct($options);
+	public function __construct(SettingsContainerInterface $options = null, LoggerInterface $logger = null){
+		parent::__construct($options, $logger);
 
 		$this->cachedir = rtrim($this->options->cacheFilestorage, '/\\').DIRECTORY_SEPARATOR;
 

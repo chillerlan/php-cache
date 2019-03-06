@@ -13,6 +13,7 @@
 namespace chillerlan\SimpleCache;
 
 use chillerlan\Settings\SettingsContainerInterface;
+use Psr\Log\LoggerInterface;
 use Redis;
 
 class RedisCache extends CacheDriverAbstract{
@@ -25,11 +26,12 @@ class RedisCache extends CacheDriverAbstract{
 	/**
 	 * RedisCache constructor.
 	 *
-	 * @param \Redis                                             $redis
+	 * @param \Redis                                               $redis
 	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
+	 * @param \Psr\Log\LoggerInterface|null                        $logger
 	 */
-	public function __construct(Redis $redis, SettingsContainerInterface $options = null){
-		parent::__construct($options);
+	public function __construct(Redis $redis, SettingsContainerInterface $options = null, LoggerInterface $logger = null){
+		parent::__construct($options, $logger);
 
 		$this->redis = $redis;
 	}
