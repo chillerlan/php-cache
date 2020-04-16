@@ -58,7 +58,7 @@ class MemcachedCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function set($key, $value, $ttl = null):bool{
-		return $this->memcached->set($this->checkKey($key), $value, $this->getTTL($ttl));
+		return $this->memcached->set($this->checkKey($key), $value, $this->getTTL($ttl) ?? 0);
 	}
 
 	/** @inheritdoc */
@@ -93,7 +93,7 @@ class MemcachedCache extends CacheDriverAbstract{
 
 		$this->checkKeyArray(\array_keys($values));
 
-		return $this->memcached->setMulti($values, $this->getTTL($ttl));
+		return $this->memcached->setMulti($values, $this->getTTL($ttl) ?? 0);
 	}
 
 	/** @inheritdoc */
