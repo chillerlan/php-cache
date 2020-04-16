@@ -55,4 +55,15 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 		$c = new FileCache(new CacheOptions(['cacheFilestorage' => $dir]));
 	}
 
+	public function testClearIgnoresParentDirectory(){
+		$nodelete = $this::CACHEDIR.'some-file.txt';
+
+		\file_put_contents($this::CACHEDIR.'some-file.txt', 'text');
+
+		$this->cache->set('foo', 'bar');
+		$this->cache->clear();
+
+		$this->assertTrue(\file_exists($nodelete));
+	}
+
 }
