@@ -82,6 +82,7 @@ class RedisCache extends CacheDriverAbstract{
 		$return = [];
 
 		foreach($keys as $key){
+			/** @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
 			$return[$key] = $values[$key] !== false ? $values[$key] : $default;
 		}
 
