@@ -18,6 +18,7 @@ use Psr\SimpleCache\CacheException;
 class FileCacheTest extends SimpleCacheTestAbstract{
 
 	protected const CACHEDIR = __DIR__.'/../.build/cache/';
+	protected const READONLY = __DIR__.'/../.build/readonly/';
 
 	protected function setUp():void{
 
@@ -47,7 +48,7 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 		$this->expectException(CacheException::class);
 		$this->expectExceptionMessage('cachedir is read-only. permissions?');
 
-		$dir = __DIR__.'/writetest/';
+		$dir = $this::READONLY;
 
 		\mkdir($dir, 0000);
 
