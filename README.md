@@ -1,6 +1,6 @@
 # chillerlan/php-cache
 
-A psr/simple-cache implementation for PHP 7.2+.
+A psr/simple-cache implementation for PHP 7.4+.
 
 [![version][packagist-badge]][packagist]
 [![license][license-badge]][license]
@@ -26,36 +26,34 @@ A psr/simple-cache implementation for PHP 7.2+.
 [donate]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WLYUNAT9ZTJZ4
 
 ## Features:
- - [PSR-16 simple-cache-implementation](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-16-simple-cache.md)
- - persistent: File based, Memcached, Redis
- - non-persistent: Session, Memory 
+- [PSR-16 simple-cache-implementation](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-16-simple-cache.md)
+  - persistent: File based, Memcached, Redis
+  - non-persistent: Session, Memory 
 
 ## Requirements
- - **PHP 7.2+**
-   - [Memcached](http://php.net/manual/en/book.memcached.php)
-   - [Redis](https://github.com/phpredis/phpredis/)
-   - [APCU](http://php.net/manual/en/book.apcu.php)
+- **PHP 7.4+**
+  - optionally one of the following extensions
+    - [Memcached](http://php.net/manual/en/book.memcached.php)
+    - [Redis](https://github.com/phpredis/phpredis/)
+    - [APCU](http://php.net/manual/en/book.apcu.php)
    
 ## Documentation
 ### Installation using [composer](https://getcomposer.org)
 You can simply clone the repo and run `composer install` in the root directory. 
 In case you want to include it elsewhere, just add the following to your *composer.json*:
 
-(note: replace `dev-master` with a [version boundary](https://getcomposer.org/doc/articles/versions.md))
+(note: replace `dev-master` with a [version constraint](https://getcomposer.org/doc/articles/versions.md#writing-version-constraints), 
+ e.g. `^3.1` - see [releases](https://github.com/chillerlan/php-cache/releases) for valid versions)
 ```json
 {
 	"require": {
-		"php": ">=7.2.0",
+		"php": "^7.4",
 		"chillerlan/php-cache": "dev-master"
 	}
 }
 ```
 
-### Manual installation
-Download the desired version of the package from [master](https://github.com/chillerlan/php-cache/archive/master.zip) or 
-[release](https://github.com/chillerlan/php-cache/releases) and extract the contents to your project folder.After that:
-  - run `composer install` to install the required dependencies and generate `/vendor/autoload.php`.
-  - if you use a custom autoloader, point the namespace `chillerlan\SimpleCache` to the folder `src` of the package 
+Installation via terminal: `composer require chillerlan/php-cache`
 
 Profit!
 
