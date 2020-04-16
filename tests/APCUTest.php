@@ -27,11 +27,4 @@ class APCUTest extends SimpleCacheTestAbstract{
 		$this->cache = new APCUCache;
 	}
 
-	public function testSetTTL(){
-		$this->markTestIncomplete();
-	}
-
-	public function testSetMultipleTTL(){
-		$this->markTestIncomplete();
-	}
 }
