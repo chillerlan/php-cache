@@ -17,9 +17,16 @@ use Psr\SimpleCache\CacheException;
 
 class FileCacheTest extends SimpleCacheTestAbstract{
 
+	protected const CACHEDIR = __DIR__.'/../.build/cache/';
+
 	protected function setUp():void{
+
+		if(!\file_exists($this::CACHEDIR)){
+			\mkdir($this::CACHEDIR, 0777, true);
+		}
+
 		$this->cache = new FileCache(new CacheOptions([
-			'cacheFilestorage' => __DIR__.'/../.cache\\/', /* some additional trailing slashes... */
+			'cacheFilestorage' => $this::CACHEDIR.'\\/', /* some additional trailing slashes... */
 		]));
 	}
 
