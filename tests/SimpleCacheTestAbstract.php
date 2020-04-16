@@ -18,10 +18,7 @@ use DateInterval, stdClass;
 
 abstract class SimpleCacheTestAbstract extends TestCase{
 
-	/**
-	 * @var \Psr\SimpleCache\CacheInterface
-	 */
-	protected $cache;
+	protected CacheInterface $cache;
 
 	public function testInstance(){
 		$this->assertInstanceOf(CacheInterface::class, $this->cache);
