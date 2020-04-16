@@ -63,7 +63,7 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 		$this->cache->set('foo', 'bar');
 		$this->cache->clear();
 
-		$this->assertTrue(\file_exists($nodelete));
+		self::assertTrue(\file_exists($nodelete));
 	}
 
 }

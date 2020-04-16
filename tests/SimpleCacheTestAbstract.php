@@ -23,24 +23,24 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	protected CacheInterface $cache;
 
 	public function testInstance(){
-		$this->assertInstanceOf(CacheInterface::class, $this->cache);
+		self::assertInstanceOf(CacheInterface::class, $this->cache);
 	}
 
 	public function testSet(){
-		$this->assertTrue($this->cache->set('hello', 'whatever'));
-		$this->assertTrue($this->cache->set('42', 'yep'));
+		self::assertTrue($this->cache->set('hello', 'whatever'));
+		self::assertTrue($this->cache->set('42', 'yep'));
 	}
 
 	public function testSetTTL(){
-		$this->assertTrue($this->cache->set('what', 'nope', new DateInterval('PT2S')));
-		$this->assertTrue($this->cache->set('oh', 'wait', 2));
-		$this->assertSame('nope', $this->cache->get('what'));
-		$this->assertSame('wait', $this->cache->get('oh'));
+		self::assertTrue($this->cache->set('what', 'nope', new DateInterval('PT2S')));
+		self::assertTrue($this->cache->set('oh', 'wait', 2));
+		self::assertSame('nope', $this->cache->get('what'));
+		self::assertSame('wait', $this->cache->get('oh'));
 
 		\sleep(3);
 
-		$this->assertFalse($this->cache->has('what'));
-		$this->assertFalse($this->cache->has('oh'));
+		self::assertFalse($this->cache->has('what'));
+		self::assertFalse($this->cache->has('oh'));
 	}
 
 	public function testSetInvalidTTLException(){
@@ -54,13 +54,13 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
-		$this->assertTrue($this->cache->set(42, 'nope'));
+		self::assertTrue($this->cache->set(42, 'nope'));
 	}
 
 	public function testGet(){
-		$this->assertSame('whatever', $this->cache->get('hello'));
-		$this->assertNull($this->cache->get('foo'));
-		$this->assertSame('default', $this->cache->get('foo', 'default'));
+		self::assertSame('whatever', $this->cache->get('hello'));
+		self::assertNull($this->cache->get('foo'));
+		self::assertSame('default', $this->cache->get('foo', 'default'));
 	}
 
 	public function testGetInvalidKeyException(){
@@ -71,7 +71,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testHas(){
-		$this->assertTrue($this->cache->has('hello'));
+		self::assertTrue($this->cache->has('hello'));
 	}
 
 	public function testHasInvalidKeyException(){
@@ -82,8 +82,8 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testDelete(){
-		$this->assertTrue($this->cache->delete('hello'));
-		$this->assertFalse($this->cache->delete('hello'));
+		self::assertTrue($this->cache->delete('hello'));
+		self::assertFalse($this->cache->delete('hello'));
 	}
 
 	public function testDeleteInvalidKeyException(){
@@ -94,17 +94,17 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testSetMultiple(){
-		$this->assertTrue($this->cache->setMultiple(['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3']));
+		self::assertTrue($this->cache->setMultiple(['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3']));
 	}
 
 	public function testSetMultipleTTL(){
-		$this->assertTrue($this->cache->setMultiple(['k1ttl' => 'v1ttl'], new DateInterval('PT2S')));
-		$this->assertTrue($this->cache->setMultiple(['k2ttl' => 'v2ttl'], 2));
-		$this->assertSame(['k1ttl' => 'v1ttl', 'k2ttl' => 'v2ttl'], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
+		self::assertTrue($this->cache->setMultiple(['k1ttl' => 'v1ttl'], new DateInterval('PT2S')));
+		self::assertTrue($this->cache->setMultiple(['k2ttl' => 'v2ttl'], 2));
+		self::assertSame(['k1ttl' => 'v1ttl', 'k2ttl' => 'v2ttl'], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
 
 		\sleep(3);
 
-		$this->assertSame(['k1ttl' => null, 'k2ttl' => null], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
+		self::assertSame(['k1ttl' => null, 'k2ttl' => null], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
 	}
 
 	public function testSetMultipleInvalidTTLException(){
@@ -129,7 +129,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testGetMultiple(){
-		$this->assertSame(['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3'], $this->cache->getMultiple(['k1', 'k2', 'k3']));
+		self::assertSame(['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3'], $this->cache->getMultiple(['k1', 'k2', 'k3']));
 	}
 
 	public function testGetMultipleInvalidDataException(){
@@ -148,9 +148,9 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 
 	public function testDeleteMultiple(){
 		$this->cache->deleteMultiple(['k1', 'k3']);
-		$this->assertFalse($this->cache->has('k1'));
-		$this->assertFalse($this->cache->has('k3'));
-		$this->assertTrue($this->cache->has('k2'));
+		self::assertFalse($this->cache->has('k1'));
+		self::assertFalse($this->cache->has('k3'));
+		self::assertTrue($this->cache->has('k2'));
 	}
 
 	public function testDeleteMultipleInvalidDataException(){
@@ -168,13 +168,13 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testClear(){
-		$this->assertTrue($this->cache->has('42'));
-		$this->assertTrue($this->cache->has('k2'));
+		self::assertTrue($this->cache->has('42'));
+		self::assertTrue($this->cache->has('k2'));
 
-		$this->assertTrue($this->cache->clear());
+		self::assertTrue($this->cache->clear());
 
-		$this->assertFalse($this->cache->has('42'));
-		$this->assertFalse($this->cache->has('k2'));
+		self::assertFalse($this->cache->has('42'));
+		self::assertFalse($this->cache->has('k2'));
 	}
 
 }
