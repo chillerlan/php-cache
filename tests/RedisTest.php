@@ -31,6 +31,7 @@ class RedisTest extends SimpleCacheTestAbstract{
 		$redis->pconnect('127.0.0.1', 6379);
 
 		if (defined('Redis::SERIALIZER_IGBINARY') && extension_loaded('igbinary')) {
+			/** @phan-suppress-next-line PhanUndeclaredConstantOfClass */
 			$redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_IGBINARY);
 		}
 
