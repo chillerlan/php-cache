@@ -21,15 +21,12 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	use LoggerAwareTrait;
 
 	/**
-	 * @var \chillerlan\SimpleCache\CacheOptions
+	 * @var \chillerlan\Settings\SettingsContainerInterface|\chillerlan\SimpleCache\CacheOptions
 	 */
-	protected $options;
+	protected SettingsContainerInterface $options;
 
 	/**
 	 * CacheDriverAbstract constructor.
-	 *
-	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
-	 * @param \Psr\Log\LoggerInterface|null                        $logger
 	 */
 	public function __construct(SettingsContainerInterface $options = null, LoggerInterface $logger = null){
 		$this->options = $options ?? new CacheOptions;

@@ -20,17 +20,10 @@ use Redis;
 
 class RedisCache extends CacheDriverAbstract{
 
-	/**
-	 * @var \Redis
-	 */
-	protected $redis;
+	protected Redis $redis;
 
 	/**
 	 * RedisCache constructor.
-	 *
-	 * @param \Redis                                               $redis
-	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
-	 * @param \Psr\Log\LoggerInterface|null                        $logger
 	 */
 	public function __construct(Redis $redis, SettingsContainerInterface $options = null, LoggerInterface $logger = null){
 		parent::__construct($options, $logger);

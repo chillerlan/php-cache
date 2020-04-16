@@ -29,7 +29,7 @@ class APCUCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function set($key, $value, $ttl = null):bool{
-		return (bool)\apcu_store($this->checkKey($key), $value, $this->getTTL($ttl));
+		return (bool)\apcu_store($this->checkKey($key), $value, $this->getTTL($ttl) ?? 0);
 	}
 
 	/** @inheritdoc */

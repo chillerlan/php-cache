@@ -14,10 +14,7 @@ namespace chillerlan\SimpleCache;
 
 class MemoryCache extends CacheDriverAbstract{
 
-	/**
-	 * @var array
-	 */
-	protected $cache = [];
+	protected array $cache = [];
 
 	/** @inheritdoc */
 	public function get($key, $default = null){

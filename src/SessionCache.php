@@ -17,18 +17,10 @@ use Psr\Log\LoggerInterface;
 
 class SessionCache extends CacheDriverAbstract{
 
-	/**
-	 * @var string
-	 */
-	protected $key;
+	protected string $key;
 
 	/**
 	 * SessionCache constructor.
-	 *
-	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
-	 * @param \Psr\Log\LoggerInterface|null                        $logger
-	 *
-	 * @throws \chillerlan\SimpleCache\CacheException
 	 */
 	public function __construct(SettingsContainerInterface $options = null, LoggerInterface $logger = null){
 		parent::__construct($options, $logger);

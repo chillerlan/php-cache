@@ -20,10 +20,7 @@ use Psr\Log\LoggerInterface;
 
 class MemcachedCache extends CacheDriverAbstract{
 
-	/**
-	 * @var \Memcached
-	 */
-	protected $memcached;
+	protected Memcached $memcached;
 
 	/**
 	 * MemcachedCache constructor.

@@ -5,15 +5,21 @@ services:
   - redis-server
   - apcu
 
+env:
+  global:
+    - PHAN_ALLOW_XDEBUG=0 PHAN_DISABLE_XDEBUG_WARN=1
+
 matrix:
   include:
-  - php: 7.2
-  - php: 7.3
-  - php: nightly
-  allow_failures:
-  - php: nightly
+    - php: 7.4
 
-install: travis_retry composer install --no-interaction --prefer-source
+before_install:
+  - pecl channel-update pecl.php.net
+  - pecl install ast
+
+install:
+  - composer install --no-interaction --prefer-source
+  - composer validate
 
 before_script:
   - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
@@ -22,6 +28,8 @@ before_script:
   - echo "apc.enable=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
-script: vendor/bin/phpunit --configuration phpunit.xml --coverage-clover clover.xml
+script:
+  - vendor/bin/phpunit --configuration phpunit.xml --coverage-clover clover.xml
+  - vendor/bin/phan
 
 after_success: bash <(curl -s https://codecov.io/bash)

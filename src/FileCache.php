@@ -18,10 +18,7 @@ use Psr\Log\LoggerInterface;
 
 class FileCache extends CacheDriverAbstract{
 
-	/**
-	 * @var string
-	 */
-	protected $cachedir;
+	protected string $cachedir;
 
 	/**
 	 * FileCache constructor.

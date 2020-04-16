@@ -14,7 +14,7 @@ namespace chillerlan\SimpleCache;
 
 trait CacheOptionsTrait{
 
-	protected $cacheFilestorage = '';
-	protected $cacheSessionkey    = '_session_cache';
+	protected string $cacheFilestorage = '';
+	protected string $cacheSessionkey  = '_session_cache';
 
 }
