@@ -38,7 +38,7 @@ class MemcachedTest extends SimpleCacheTestAbstract{
 		$this->expectException(CacheException::class);
 		$this->expectExceptionMessage('no memcache server available');
 
-		new MemcachedCache(new Memcached);
+		$c = new MemcachedCache(new Memcached);
 	}
 
 }

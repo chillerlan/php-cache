@@ -25,6 +25,6 @@ class SessionDriverTest extends NonpersistentTestAbstract{
 		$this->expectException(CacheException::class);
 		$this->expectExceptionMessage('invalid session cache key');
 
-		new SessionCache(new CacheOptions(['cacheSessionkey' => '']));
+		$c = new SessionCache(new CacheOptions(['cacheSessionkey' => '']));
 	}
 }

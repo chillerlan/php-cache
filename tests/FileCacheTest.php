@@ -34,7 +34,7 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 		$this->expectException(CacheException::class);
 		$this->expectExceptionMessage('invalid cachedir');
 
-		new FileCache(new CacheOptions(['cacheFilestorage' => 'foo']));
+		$c = new FileCache(new CacheOptions(['cacheFilestorage' => 'foo']));
 	}
 
 	public function testFileCacheDirnotWritableException(){
@@ -51,7 +51,7 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 
 		\mkdir($dir, 0000);
 
-		new FileCache(new CacheOptions(['cacheFilestorage' => $dir]));
+		$c = new FileCache(new CacheOptions(['cacheFilestorage' => $dir]));
 	}
 
 }
