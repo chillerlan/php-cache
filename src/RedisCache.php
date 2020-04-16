@@ -61,7 +61,7 @@ class RedisCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function delete($key):bool{
-		return (bool)$this->redis->delete($this->checkKey($key));
+		return (bool)$this->redis->del($this->checkKey($key));
 	}
 
 	/** @inheritdoc */
@@ -76,8 +76,7 @@ class RedisCache extends CacheDriverAbstract{
 		$this->checkKeyArray($keys);
 
 		// scary
-		$values = array_combine($keys, $this->redis->mget($keys));
-
+		$values = \array_combine($keys, $this->redis->mget($keys));
 		$return = [];
 
 		foreach($keys as $key){
@@ -93,7 +92,7 @@ class RedisCache extends CacheDriverAbstract{
 		$ttl    = $this->getTTL($ttl);
 
 		if($ttl === null){
-			$this->checkKeyArray(array_keys($values));
+			$this->checkKeyArray(\array_keys($values));
 
 			return $this->redis->msetnx($values);
 		}
@@ -113,7 +112,7 @@ class RedisCache extends CacheDriverAbstract{
 
 		$this->checkKeyArray($keys);
 
-		return (bool)$this->redis->delete($keys);
+		return (bool)$this->redis->del($keys);
 	}
 
 }

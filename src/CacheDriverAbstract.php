@@ -82,7 +82,7 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	 */
 	protected function checkKey($key):string{
 
-		if(!is_string($key) || empty($key)){
+		if(!\is_string($key) || empty($key)){
 			$msg = 'invalid cache key: "'.$key.'"';
 			$this->logger->error($msg);
 
@@ -113,11 +113,11 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	 */
 	protected function getData($data):array{
 
-		if(is_array($data)){
+		if(\is_array($data)){
 			return $data;
 		}
 		elseif($data instanceof Traversable){
-			return iterator_to_array($data); // @codeCoverageIgnore
+			return \iterator_to_array($data); // @codeCoverageIgnore
 		}
 
 		$msg = 'invalid data';
@@ -135,9 +135,9 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	protected function getTTL($ttl):?int{
 
 		if($ttl instanceof DateInterval){
-			return (new DateTime)->add($ttl)->getTimeStamp() - time();
+			return (new DateTime)->add($ttl)->getTimeStamp() - \time();
 		}
-		else if((is_int($ttl) && $ttl > 0) || $ttl === null){
+		else if((\is_int($ttl) && $ttl > 0) || $ttl === null){
 			return $ttl;
 		}
 

@@ -52,7 +52,7 @@ class SessionCache extends CacheDriverAbstract{
 
 		if(isset($_SESSION[$this->key][$key])){
 
-			if($_SESSION[$this->key][$key]['ttl'] === null || $_SESSION[$this->key][$key]['ttl'] > time()){
+			if($_SESSION[$this->key][$key]['ttl'] === null || $_SESSION[$this->key][$key]['ttl'] > \time()){
 				return $_SESSION[$this->key][$key]['content'];
 			}
 
@@ -67,7 +67,7 @@ class SessionCache extends CacheDriverAbstract{
 		$ttl = $this->getTTL($ttl);
 
 		$_SESSION[$this->key][$this->checkKey($key)] = [
-			'ttl' => $ttl ? time() + $ttl : null,
+			'ttl' => $ttl ? \time() + $ttl : null,
 			'content' => $value,
 		];
 

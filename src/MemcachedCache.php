@@ -92,7 +92,7 @@ class MemcachedCache extends CacheDriverAbstract{
 	public function setMultiple($values, $ttl = null):bool{
 		$values = $this->getData($values);
 
-		$this->checkKeyArray(array_keys($values));
+		$this->checkKeyArray(\array_keys($values));
 
 		return $this->memcached->setMulti($values, $this->getTTL($ttl));
 	}

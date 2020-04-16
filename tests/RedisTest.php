@@ -19,7 +19,7 @@ class RedisTest extends SimpleCacheTestAbstract{
 
 	protected function setUp():void{
 
-		if(!extension_loaded('redis')){
+		if(!\extension_loaded('redis')){
 			$this->markTestSkipped('Redis not installed/enabled');
 
 			return;

@@ -34,7 +34,7 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 
 	public function testFileCacheDirnotWritableException(){
 
-		if(PHP_OS_FAMILY === 'Windows'){
+		if(\PHP_OS_FAMILY === 'Windows'){
 			$this->markTestSkipped('Windows');
 			return;
 		}
@@ -44,7 +44,7 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 
 		$dir = __DIR__.'/writetest/';
 
-		mkdir($dir, 0000);
+		\mkdir($dir, 0000);
 
 		new FileCache(new CacheOptions(['cacheFilestorage' => $dir]));
 	}

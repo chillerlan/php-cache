@@ -47,7 +47,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->assertSame('nope', $this->cache->get('what'));
 		$this->assertSame('wait', $this->cache->get('oh'));
 
-		sleep(3);
+		\sleep(3);
 
 		$this->assertFalse($this->cache->has('what'));
 		$this->assertFalse($this->cache->has('oh'));
@@ -112,7 +112,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->assertTrue($this->cache->setMultiple(['k2ttl' => 'v2ttl'], 2));
 		$this->assertSame(['k1ttl' => 'v1ttl', 'k2ttl' => 'v2ttl'], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
 
-		sleep(3);
+		\sleep(3);
 
 		$this->assertSame(['k1ttl' => null, 'k2ttl' => null], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
 	}

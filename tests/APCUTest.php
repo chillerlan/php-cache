@@ -18,7 +18,7 @@ class APCUTest extends SimpleCacheTestAbstract{
 
 	protected function setUp():void{
 
-		if(!extension_loaded('apcu')){
+		if(!\extension_loaded('apcu')){
 			$this->markTestSkipped('APCU not installed/enabled');
 
 			return;
