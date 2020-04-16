@@ -25,8 +25,6 @@ class APCUTest extends SimpleCacheTestAbstract{
 		}
 
 		$this->cache = new APCUCache;
-
-#		parent::setUp();
 	}
 
 	public function testSetTTL(){

@@ -32,8 +32,6 @@ class MemcachedTest extends SimpleCacheTestAbstract{
 		$memcached->addServer('localhost', 11211);
 
 		$this->cache = new MemcachedCache($memcached);
-
-#		parent::setUp();
 	}
 
 	public function testMemcachedDriverNoServerException(){

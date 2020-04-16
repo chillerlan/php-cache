@@ -18,8 +18,6 @@ class MemoryCacheTest extends NonpersistentTestAbstract{
 
 	protected function setUp():void{
 		$this->cache = new MemoryCache;
-
-#		parent::setUp();
 	}
 
 }

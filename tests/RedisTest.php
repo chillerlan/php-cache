@@ -35,8 +35,6 @@ class RedisTest extends SimpleCacheTestAbstract{
 		}
 
 		$this->cache = new RedisCache($redis);
-
-#		parent::setUp();
 	}
 
 }

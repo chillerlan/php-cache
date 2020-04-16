@@ -13,26 +13,17 @@
 namespace chillerlan\SimpleCacheTest;
 
 use PHPUnit\Framework\TestCase;
-use Psr\SimpleCache\CacheInterface;
-use Psr\SimpleCache\InvalidArgumentException;
+use Psr\SimpleCache\{CacheInterface, InvalidArgumentException};
+use DateInterval, stdClass;
 
 abstract class SimpleCacheTestAbstract extends TestCase{
 
 	/**
-	 * @var \chillerlan\SimpleCache\CacheDriverInterface
-	 */
-	protected $cacheDriver;
-
-	/**
-	 * @var \chillerlan\SimpleCache\Cache
+	 * @var \Psr\SimpleCache\CacheInterface
 	 */
 	protected $cache;
 
-#	protected function setUp():void{
-#	}
-
 	public function testInstance(){
-#		$this->assertInstanceOf(CacheDriverInterface::class, $this->cacheDriver);
 		$this->assertInstanceOf(CacheInterface::class, $this->cache);
 	}
 
@@ -42,7 +33,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testSetTTL(){
-		$this->assertTrue($this->cache->set('what', 'nope', new \DateInterval('PT2S')));
+		$this->assertTrue($this->cache->set('what', 'nope', new DateInterval('PT2S')));
 		$this->assertTrue($this->cache->set('oh', 'wait', 2));
 		$this->assertSame('nope', $this->cache->get('what'));
 		$this->assertSame('wait', $this->cache->get('oh'));
@@ -57,7 +48,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid ttl');
 
-		$this->cache->set('.', '', new \stdClass);
+		$this->cache->set('.', '', new stdClass);
 	}
 
 	public function testSetInvalidKeyException(){
@@ -108,7 +99,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testSetMultipleTTL(){
-		$this->assertTrue($this->cache->setMultiple(['k1ttl' => 'v1ttl'], new \DateInterval('PT2S')));
+		$this->assertTrue($this->cache->setMultiple(['k1ttl' => 'v1ttl'], new DateInterval('PT2S')));
 		$this->assertTrue($this->cache->setMultiple(['k2ttl' => 'v2ttl'], 2));
 		$this->assertSame(['k1ttl' => 'v1ttl', 'k2ttl' => 'v2ttl'], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
 
@@ -121,7 +112,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid ttl');
 
-		$this->cache->setMultiple(['.' => ''], new \stdClass);
+		$this->cache->setMultiple(['.' => ''], new stdClass);
 	}
 
 	public function testSetMultipleInvalidDataException(){

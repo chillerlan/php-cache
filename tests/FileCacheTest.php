@@ -21,8 +21,6 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 		$this->cache = new FileCache(new CacheOptions([
 			'cacheFilestorage' => __DIR__.'/../.cache\\/', /* some additional trailing slashes... */
 		]));
-
-#		parent::setUp();
 	}
 
 	public function testFileCacheInvalidDirException(){
