@@ -39,17 +39,11 @@ class FileCache extends CacheDriverAbstract{
 		$this->cachedir = rtrim($this->options->cacheFilestorage, '/\\').DIRECTORY_SEPARATOR;
 
 		if(!is_dir($this->cachedir)){
-			$msg = 'invalid cachedir "'.$this->cachedir.'"';
-
-			$this->logger->error($msg);
-			throw new CacheException($msg);
+			throw new CacheException('invalid cachedir "'.$this->cachedir.'"');
 		}
 
 		if(!is_writable($this->cachedir)){
-			$msg = 'cachedir is read-only. permissions?';
-
-			$this->logger->error($msg);
-			throw new CacheException($msg);
+			throw new CacheException('cachedir is read-only. permissions?');
 		}
 
 	}

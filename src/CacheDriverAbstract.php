@@ -84,10 +84,7 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	protected function checkKey($key):string{
 
 		if(!is_string($key) || empty($key)){
-			$msg = 'invalid cache key: "'.$key.'"';
-			$this->logger->error($msg);
-
-			throw new InvalidArgumentException($msg);
+			throw new InvalidArgumentException('invalid cache key: "'.$key.'"');
 		}
 
 		return $key;
@@ -121,10 +118,7 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 			return iterator_to_array($data); // @codeCoverageIgnore
 		}
 
-		$msg = 'invalid data';
-		$this->logger->error($msg);
-
-		throw new InvalidArgumentException($msg);
+		throw new InvalidArgumentException('invalid data');
 	}
 
 	/**
@@ -142,10 +136,7 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 			return $ttl;
 		}
 
-		$msg = 'invalid ttl';
-		$this->logger->error($msg);
-
-		throw new InvalidArgumentException($msg);
+		throw new InvalidArgumentException('invalid ttl');
 	}
 
 	/**

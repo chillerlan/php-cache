@@ -23,6 +23,8 @@ class SessionCache extends CacheDriverAbstract{
 
 	/**
 	 * SessionCache constructor.
+	 *
+	 * @throws \Psr\SimpleCache\CacheException
 	 */
 	public function __construct(SettingsContainerInterface $options = null, LoggerInterface $logger = null){
 		parent::__construct($options, $logger);
@@ -30,10 +32,7 @@ class SessionCache extends CacheDriverAbstract{
 		$this->key = $this->options->cacheSessionkey;
 
 		if(!is_string($this->key) || empty($this->key)){
-			$msg = 'invalid session cache key';
-
-			$this->logger->error($msg);
-			throw new CacheException($msg);
+			throw new CacheException('invalid session cache key');
 		}
 
 

@@ -40,10 +40,7 @@ class MemcachedCache extends CacheDriverAbstract{
 		$this->memcached = $memcached;
 
 		if(empty($this->memcached->getServerList())){
-			$msg = 'no memcache server available';
-
-			$this->logger->error($msg);
-			throw new CacheException($msg);
+			throw new CacheException('no memcache server available');
 		}
 
 	}
