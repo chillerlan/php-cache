@@ -60,7 +60,6 @@ jobs:
         uses: shogo82148/actions-setup-redis@v1
         with:
           redis-version: '6.x'
-        run: redis-cli ping
 
       - name: "Install Memcached"
         uses: niden/actions-memcached@v7
