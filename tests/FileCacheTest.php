@@ -55,7 +55,7 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 
 		$dir = $this::READONLY;
 
-		mkdir($dir, 0000);
+		mkdir($dir, 0444);
 
 		$this->options->cacheFilestorage = $dir;
 
