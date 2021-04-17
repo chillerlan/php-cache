@@ -102,7 +102,7 @@ class MemcachedCache extends CacheDriverAbstract{
 
 		$this->checkKeyArray($keys);
 
-		return $this->checkReturn((array)$this->memcached->deleteMulti($keys));
+		return $this->checkReturn($this->memcached->deleteMulti($keys));
 	}
 
 }

@@ -146,9 +146,9 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	 */
 	protected function checkReturn(array $booleans):bool{
 
-		foreach($booleans as $bool){
+		foreach($booleans as $boolean){
 
-			if(!(bool)$bool){
+			if(!(bool)$boolean){
 				return false; // @codeCoverageIgnore
 			}
 

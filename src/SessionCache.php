@@ -60,7 +60,7 @@ class SessionCache extends CacheDriverAbstract{
 		$ttl = $this->getTTL($ttl);
 
 		$_SESSION[$this->key][$this->checkKey($key)] = [
-			'ttl' => $ttl ? time() + $ttl : null,
+			'ttl'     => $ttl ? time() + $ttl : null,
 			'content' => $value,
 		];
 
