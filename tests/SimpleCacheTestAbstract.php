@@ -9,7 +9,7 @@
  * @copyright    2017 Smiley
  * @license      MIT
  *
- * @phan-file-suppress PhanTypeMismatchArgument
+ * @phan-file-suppress PhanTypeMismatchArgument, PhanTypeMismatchArgumentProbablyReal
  */
 
 namespace chillerlan\SimpleCacheTest;

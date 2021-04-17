@@ -10,6 +10,7 @@
  * @license      MIT
  *
  * @noinspection PhpComposerExtensionStubsInspection
+ * @phan-file-suppress PhanUndeclaredClassMethod, PhanUndeclaredClassConstant
  */
 
 namespace chillerlan\SimpleCacheTest;
