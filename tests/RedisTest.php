@@ -22,17 +22,16 @@ use function defined, extension_loaded;
 class RedisTest extends SimpleCacheTestAbstract{
 
 	protected function setUp():void{
+		parent::setUp();
 
 		if(!extension_loaded('redis')){
 			$this->markTestSkipped('Redis not installed/enabled');
-
-			return;
 		}
 
-		$redis = new Redis();
+		$redis = new Redis;
 		$redis->pconnect('127.0.0.1', 6379);
 
-		if (defined('Redis::SERIALIZER_IGBINARY') && extension_loaded('igbinary')) {
+		if(defined('Redis::SERIALIZER_IGBINARY') && extension_loaded('igbinary')){
 			/** @phan-suppress-next-line PhanUndeclaredConstantOfClass */
 			$redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_IGBINARY);
 		}

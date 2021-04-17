@@ -21,11 +21,10 @@ use Psr\SimpleCache\CacheException;
 class MemcachedTest extends SimpleCacheTestAbstract{
 
 	protected function setUp():void{
+		parent::setUp();
 
 		if(!extension_loaded('memcached')){
 			$this->markTestSkipped('Memcached not installed/enabled');
-
-			return;
 		}
 
 		$memcached = new Memcached('test');
@@ -34,11 +33,11 @@ class MemcachedTest extends SimpleCacheTestAbstract{
 		$this->cache = new MemcachedCache($memcached);
 	}
 
-	public function testMemcachedDriverNoServerException(){
+	public function testMemcachedDriverNoServerException():void{
 		$this->expectException(CacheException::class);
 		$this->expectExceptionMessage('no memcache server available');
 
-		$c = new MemcachedCache(new Memcached);
+		$this->cache = new MemcachedCache(new Memcached);
 	}
 
 }

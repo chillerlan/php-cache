@@ -17,6 +17,8 @@ use chillerlan\SimpleCache\MemoryCache;
 class MemoryCacheTest extends NonpersistentTestAbstract{
 
 	protected function setUp():void{
+		parent::setUp();
+
 		$this->cache = new MemoryCache;
 	}
 

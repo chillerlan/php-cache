@@ -14,6 +14,8 @@
 
 namespace chillerlan\SimpleCacheTest;
 
+use chillerlan\Settings\SettingsContainerInterface;
+use chillerlan\SimpleCache\CacheOptions;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\{CacheInterface, InvalidArgumentException};
 use DateInterval, stdClass;
@@ -23,160 +25,169 @@ use function sleep;
 abstract class SimpleCacheTestAbstract extends TestCase{
 
 	protected CacheInterface $cache;
+	protected SettingsContainerInterface $options;
 
-	public function testInstance(){
-		self::assertInstanceOf(CacheInterface::class, $this->cache);
+	protected function setUp():void{
+		$this->options = new CacheOptions;
 	}
 
-	public function testSet(){
-		self::assertTrue($this->cache->set('hello', 'whatever'));
-		self::assertTrue($this->cache->set('42', 'yep'));
+	public function testInstance():void{
+		$this::assertInstanceOf(CacheInterface::class, $this->cache);
 	}
 
-	public function testSetTTL(){
-		self::assertTrue($this->cache->set('what', 'nope', new DateInterval('PT2S')));
-		self::assertTrue($this->cache->set('oh', 'wait', 2));
-		self::assertSame('nope', $this->cache->get('what'));
-		self::assertSame('wait', $this->cache->get('oh'));
+	public function testSet():void{
+		$this::assertTrue($this->cache->set('hello', 'whatever'));
+		$this::assertTrue($this->cache->set('42', 'yep'));
+	}
+
+	public function testSetTTL():void{
+		$this::assertTrue($this->cache->set('what', 'nope', new DateInterval('PT2S')));
+		$this::assertTrue($this->cache->set('oh', 'wait', 2));
+		$this::assertSame('nope', $this->cache->get('what'));
+		$this::assertSame('wait', $this->cache->get('oh'));
 
 		sleep(3);
 
-		self::assertFalse($this->cache->has('what'));
-		self::assertFalse($this->cache->has('oh'));
+		$this::assertFalse($this->cache->has('what'));
+		$this::assertFalse($this->cache->has('oh'));
 	}
 
-	public function testSetInvalidTTLException(){
+	public function testSetInvalidTTLException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid ttl');
 
 		$this->cache->set('.', '', new stdClass);
 	}
 
-	public function testSetInvalidKeyException(){
+	public function testSetInvalidKeyException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
-		self::assertTrue($this->cache->set(42, 'nope'));
+		$this::assertTrue($this->cache->set(42, 'nope'));
 	}
 
-	public function testGet(){
-		self::assertSame('whatever', $this->cache->get('hello'));
-		self::assertNull($this->cache->get('foo'));
-		self::assertSame('default', $this->cache->get('foo', 'default'));
+	public function testGet():void{
+		$this::assertSame('whatever', $this->cache->get('hello'));
+		$this::assertNull($this->cache->get('foo'));
+		$this::assertSame('default', $this->cache->get('foo', 'default'));
 	}
 
-	public function testGetInvalidKeyException(){
+	public function testGetInvalidKeyException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
 		$this->cache->get(42);
 	}
 
-	public function testHas(){
-		self::assertTrue($this->cache->has('hello'));
+	public function testHas():void{
+		$this::assertTrue($this->cache->has('hello'));
 	}
 
-	public function testHasInvalidKeyException(){
+	public function testHasInvalidKeyException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
 		$this->cache->has(42);
 	}
 
-	public function testDelete(){
-		self::assertTrue($this->cache->delete('hello'));
-		self::assertFalse($this->cache->delete('hello'));
+	public function testDelete():void{
+		$this::assertTrue($this->cache->delete('hello'));
+		$this::assertFalse($this->cache->delete('hello'));
 	}
 
-	public function testDeleteInvalidKeyException(){
+	public function testDeleteInvalidKeyException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
 		$this->cache->delete(42);
 	}
 
-	public function testSetMultiple(){
-		self::assertTrue($this->cache->setMultiple(['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3']));
+	public function testSetMultiple():void{
+		$this::assertTrue($this->cache->setMultiple(['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3']));
 	}
 
-	public function testSetMultipleTTL(){
-		self::assertTrue($this->cache->setMultiple(['k1ttl' => 'v1ttl'], new DateInterval('PT2S')));
-		self::assertTrue($this->cache->setMultiple(['k2ttl' => 'v2ttl'], 2));
-		self::assertSame(['k1ttl' => 'v1ttl', 'k2ttl' => 'v2ttl'], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
+	public function testSetMultipleTTL():void{
+		$this::assertTrue($this->cache->setMultiple(['k1ttl' => 'v1ttl'], new DateInterval('PT2S')));
+		$this::assertTrue($this->cache->setMultiple(['k2ttl' => 'v2ttl'], 2));
+		$this::assertSame(['k1ttl' => 'v1ttl', 'k2ttl' => 'v2ttl'], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
 
 		sleep(3);
 
-		self::assertSame(['k1ttl' => null, 'k2ttl' => null], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
+		$this::assertSame(['k1ttl' => null, 'k2ttl' => null], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
 	}
 
-	public function testSetMultipleInvalidTTLException(){
+	public function testSetMultipleInvalidTTLException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid ttl');
 
 		$this->cache->setMultiple(['.' => ''], new stdClass);
 	}
 
-	public function testSetMultipleInvalidDataException(){
+	public function testSetMultipleInvalidDataException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid data');
 
+		/** @noinspection PhpParamsInspection */
 		$this->cache->setMultiple('foo');
 	}
 
-	public function testSetMultipleInvalidKeyException(){
+	public function testSetMultipleInvalidKeyException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "0"');
 
 		$this->cache->setMultiple(['foo']);
 	}
 
-	public function testGetMultiple(){
-		self::assertSame(['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3'], $this->cache->getMultiple(['k1', 'k2', 'k3']));
+	public function testGetMultiple():void{
+		$this::assertSame(['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3'], $this->cache->getMultiple(['k1', 'k2', 'k3']));
 	}
 
-	public function testGetMultipleInvalidDataException(){
+	public function testGetMultipleInvalidDataException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid data');
 
+		/** @noinspection PhpParamsInspection */
 		$this->cache->getMultiple('foo');
 	}
 
-	public function testGetMultipleInvalidKeyException(){
+	public function testGetMultipleInvalidKeyException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
 		$this->cache->getMultiple([42]);
 	}
 
-	public function testDeleteMultiple(){
+	public function testDeleteMultiple():void{
 		$this->cache->deleteMultiple(['k1', 'k3']);
-		self::assertFalse($this->cache->has('k1'));
-		self::assertFalse($this->cache->has('k3'));
-		self::assertTrue($this->cache->has('k2'));
+
+		$this::assertFalse($this->cache->has('k1'));
+		$this::assertFalse($this->cache->has('k3'));
+		$this::assertTrue($this->cache->has('k2'));
 	}
 
-	public function testDeleteMultipleInvalidDataException(){
+	public function testDeleteMultipleInvalidDataException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid data');
 
+		/** @noinspection PhpParamsInspection */
 		$this->cache->deleteMultiple('foo');
 	}
 
-	public function testDeleteMultipleInvalidKeyException(){
+	public function testDeleteMultipleInvalidKeyException():void{
 		$this->expectException(InvalidArgumentException::class);
 		$this->expectExceptionMessage('invalid cache key: "42"');
 
 		$this->cache->deleteMultiple([42]);
 	}
 
-	public function testClear(){
-		self::assertTrue($this->cache->has('42'));
-		self::assertTrue($this->cache->has('k2'));
+	public function testClear():void{
+		$this::assertTrue($this->cache->has('42'));
+		$this::assertTrue($this->cache->has('k2'));
 
-		self::assertTrue($this->cache->clear());
+		$this::assertTrue($this->cache->clear());
 
-		self::assertFalse($this->cache->has('42'));
-		self::assertFalse($this->cache->has('k2'));
+		$this::assertFalse($this->cache->has('42'));
+		$this::assertFalse($this->cache->has('k2'));
 	}
 
 }

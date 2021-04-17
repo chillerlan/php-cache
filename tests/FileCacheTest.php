@@ -12,7 +12,7 @@
 
 namespace chillerlan\SimpleCacheTest;
 
-use chillerlan\SimpleCache\{CacheOptions, FileCache};
+use chillerlan\SimpleCache\FileCache;
 use Psr\SimpleCache\CacheException;
 
 use function file_exists, file_put_contents, mkdir;
@@ -24,28 +24,30 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 	protected const READONLY = __DIR__.'/../.build/readonly/';
 
 	protected function setUp():void{
+		parent::setUp();
 
 		if(!file_exists($this::CACHEDIR)){
 			mkdir($this::CACHEDIR, 0777, true);
 		}
 
-		$this->cache = new FileCache(new CacheOptions([
-			'cacheFilestorage' => $this::CACHEDIR.'\\/', /* some additional trailing slashes... */
-		]));
+		$this->options->cacheFilestorage = $this::CACHEDIR.'\\/'; // some additional trailing slashes...
+
+		$this->cache = new FileCache($this->options);
 	}
 
-	public function testFileCacheInvalidDirException(){
+	public function testFileCacheInvalidDirException():void{
 		$this->expectException(CacheException::class);
 		$this->expectExceptionMessage('invalid cachedir');
 
-		$c = new FileCache(new CacheOptions(['cacheFilestorage' => 'foo']));
+		$this->options->cacheFilestorage = 'foo';
+
+		$this->cache = new FileCache($this->options);
 	}
 
-	public function testFileCacheDirnotWritableException(){
+	public function testFileCacheDirnotWritableException():void{
 
 		if(PHP_OS_FAMILY === 'Windows'){
 			$this->markTestSkipped('Windows');
-			return;
 		}
 
 		$this->expectException(CacheException::class);
@@ -55,18 +57,20 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 
 		mkdir($dir, 0000);
 
-		$c = new FileCache(new CacheOptions(['cacheFilestorage' => $dir]));
+		$this->options->cacheFilestorage = $dir;
+
+		$this->cache = new FileCache($this->options);
 	}
 
-	public function testClearIgnoresParentDirectory(){
+	public function testClearIgnoresParentDirectory():void{
 		$nodelete = $this::CACHEDIR.'some-file.txt';
 
-		file_put_contents($this::CACHEDIR.'some-file.txt', 'text');
+		file_put_contents($nodelete, 'text');
 
 		$this->cache->set('foo', 'bar');
 		$this->cache->clear();
 
-		self::assertTrue(file_exists($nodelete));
+		$this::assertTrue(file_exists($nodelete));
 	}
 
 }

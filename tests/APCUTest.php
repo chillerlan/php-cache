@@ -19,21 +19,20 @@ use function extension_loaded;
 class APCUTest extends SimpleCacheTestAbstract{
 
 	protected function setUp():void{
+		parent::setUp();
 
 		if(!extension_loaded('apcu')){
 			$this->markTestSkipped('APCU not installed/enabled');
-
-			return;
 		}
 
 		$this->cache = new APCUCache;
 	}
 
-	public function testSetTTL(){
+	public function testSetTTL():void{
 		$this->markTestIncomplete();
 	}
 
-	public function testSetMultipleTTL(){
+	public function testSetMultipleTTL():void{
 		$this->markTestIncomplete();
 	}
 }
