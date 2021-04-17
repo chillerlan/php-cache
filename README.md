@@ -2,33 +2,33 @@
 
 A psr/simple-cache implementation for PHP 7.4+.
 
+[![PHP Version Support][php-badge]][php]
 [![version][packagist-badge]][packagist]
 [![license][license-badge]][license]
 [![Travis][travis-badge]][travis]
 [![Coverage][coverage-badge]][coverage]
 [![Scrunitizer][scrutinizer-badge]][scrutinizer]
 [![Packagist downloads][downloads-badge]][downloads]
-[![PayPal donate][donate-badge]][donate]
 
-[packagist-badge]: https://img.shields.io/packagist/v/chillerlan/php-cache.svg?style=flat-square
+[php-badge]: https://img.shields.io/packagist/php-v/chillerlan/php-cache?logo=php&color=8892BF
+[php]: https://www.php.net/supported-versions.php
+[packagist-badge]: https://img.shields.io/packagist/v/chillerlan/php-cache.svg?logo=packagist
 [packagist]: https://packagist.org/packages/chillerlan/php-cache
-[license-badge]: https://img.shields.io/github/license/chillerlan/php-cache.svg?style=flat-square
+[license-badge]: https://img.shields.io/github/license/chillerlan/php-cache.svg
 [license]: https://github.com/chillerlan/php-cache/blob/master/LICENSE
-[travis-badge]: https://img.shields.io/travis/chillerlan/php-cache.svg?style=flat-square
-[travis]: https://travis-ci.org/chillerlan/php-cache
-[coverage-badge]: https://img.shields.io/codecov/c/github/chillerlan/php-cache.svg?style=flat-square
+[travis-badge]: https://img.shields.io/travis/com/chillerlan/php-cache.svg?logo=travis
+[travis]: https://travis-ci.com/chillerlan/php-cache
+[coverage-badge]: https://img.shields.io/codecov/c/github/chillerlan/php-cache.svg?logo=codecov
 [coverage]: https://codecov.io/github/chillerlan/php-cache
-[scrutinizer-badge]: https://img.shields.io/scrutinizer/g/chillerlan/php-cache.svg?style=flat-square
+[scrutinizer-badge]: https://img.shields.io/scrutinizer/g/chillerlan/php-cache.svg?logo=scrutinizer
 [scrutinizer]: https://scrutinizer-ci.com/g/chillerlan/php-cache
-[downloads-badge]: https://img.shields.io/packagist/dt/chillerlan/php-cache.svg?style=flat-square
+[downloads-badge]: https://img.shields.io/packagist/dt/chillerlan/php-cache.svg?logo=packagist
 [downloads]: https://packagist.org/packages/chillerlan/php-cache/stats
-[donate-badge]: https://img.shields.io/badge/donate-paypal-ff33aa.svg?style=flat-square
-[donate]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WLYUNAT9ZTJZ4
 
 ## Features:
 - [PSR-16 simple-cache-implementation](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-16-simple-cache.md)
   - persistent: File based, Memcached, Redis
-  - non-persistent: Session, Memory 
+  - non-persistent: Session, Memory
 
 ## Requirements
 - **PHP 7.4+**
@@ -36,19 +36,19 @@ A psr/simple-cache implementation for PHP 7.4+.
     - [Memcached](http://php.net/manual/en/book.memcached.php)
     - [Redis](https://github.com/phpredis/phpredis/)
     - [APCU](http://php.net/manual/en/book.apcu.php)
-   
+
 ## Documentation
 ### Installation using [composer](https://getcomposer.org)
-You can simply clone the repo and run `composer install` in the root directory. 
+You can simply clone the repo and run `composer install` in the root directory.
 In case you want to include it elsewhere, just add the following to your *composer.json*:
 
-(note: replace `dev-master` with a [version constraint](https://getcomposer.org/doc/articles/versions.md#writing-version-constraints), 
+(note: replace `dev-main` with a [version constraint](https://getcomposer.org/doc/articles/versions.md#writing-version-constraints),
  e.g. `^3.1` - see [releases](https://github.com/chillerlan/php-cache/releases) for valid versions)
 ```json
 {
 	"require": {
-		"php": "^7.4",
-		"chillerlan/php-cache": "dev-master"
+		"php": "^7.4 || ^8.0",
+		"chillerlan/php-cache": "dev-main"
 	}
 }
 ```
@@ -63,7 +63,7 @@ Just invoke a cache instance with the desired `CacheInterface` like so:
 // Redis
 $redis = new Redis;
 $redis->pconnect('127.0.0.1', 6379);
-		
+
 $cache = new RedisCache($redis);
 
 // Memcached
