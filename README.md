@@ -8,7 +8,8 @@ A psr/simple-cache implementation for PHP 7.4+.
 [![Travis][travis-badge]][travis]
 [![Coverage][coverage-badge]][coverage]
 [![Scrunitizer][scrutinizer-badge]][scrutinizer]
-[![Packagist downloads][downloads-badge]][downloads]
+[![Packagist downloads][downloads-badge]][downloads]<br/>
+[![Continuous Integration][gh-action-badge]][gh-action]
 
 [php-badge]: https://img.shields.io/packagist/php-v/chillerlan/php-cache?logo=php&color=8892BF
 [php]: https://www.php.net/supported-versions.php
@@ -24,6 +25,8 @@ A psr/simple-cache implementation for PHP 7.4+.
 [scrutinizer]: https://scrutinizer-ci.com/g/chillerlan/php-cache
 [downloads-badge]: https://img.shields.io/packagist/dt/chillerlan/php-cache.svg?logo=packagist
 [downloads]: https://packagist.org/packages/chillerlan/php-cache/stats
+[gh-action-badge]: https://github.com/chillerlan/php-cache/workflows/Continuous%20Integration/badge.svg
+[gh-action]: https://github.com/chillerlan/php-cache/actions
 
 ## Features:
 - [PSR-16 simple-cache-implementation](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-16-simple-cache.md)
