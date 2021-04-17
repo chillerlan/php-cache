@@ -49,4 +49,9 @@ return [
 	'exclude_analysis_directory_list' => [
 		'vendor',
 	],
+
+	'suppress_issue_types' => [
+		'PhanTypeInvalidThrowsIsInterface',
+	]
+
 ];
