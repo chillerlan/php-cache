@@ -43,25 +43,27 @@ jobs:
   tests:
     name: "Unit Tests"
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
         php-version:
           - "7.4"
           - "8.0"
 
     steps:
-      - name: "Configure git to avoid issues with line endings"
-        if: ${{ runner.os == 'Windows' }}
-        run: git config --global core.autocrlf false
-
       - name: "Checkout"
         uses: actions/checkout@v2
+
+      - name: "Install Redis"
+        uses: shogo82148/actions-setup-redis@v1
+        with:
+          redis-version: '6.x'
+        run: redis-cli ping
+
+      - name: "Install Memcached"
+        uses: niden/actions-memcached@v7
 
       - name: "Install PHP with extensions"
         uses: shivammathur/setup-php@v2
