@@ -20,8 +20,8 @@ use const PHP_OS_FAMILY;
 
 class FileCacheTest extends SimpleCacheTestAbstract{
 
-	protected const CACHEDIR = __DIR__.'/../.build/cache/';
-	protected const READONLY = __DIR__.'/../.build/readonly/';
+	protected const CACHEDIR = __DIR__.'/.cache/';
+	protected const READONLY = __DIR__.'/.readonly/';
 
 	protected function setUp():void{
 		parent::setUp();
