@@ -16,6 +16,11 @@ use chillerlan\Settings\SettingsContainerInterface;
 use FilesystemIterator, RecursiveDirectoryIterator, RecursiveIteratorIterator, stdClass;
 use Psr\Log\LoggerInterface;
 
+use function dirname, file_get_contents, file_put_contents, hash, is_dir, is_file, is_writable,
+	mkdir, rtrim, serialize, strpos, str_replace, time, unlink, unserialize;
+
+use const DIRECTORY_SEPARATOR;
+
 class FileCache extends CacheDriverAbstract{
 
 	protected string $cachedir;
@@ -31,16 +36,16 @@ class FileCache extends CacheDriverAbstract{
 	public function __construct(SettingsContainerInterface $options = null, LoggerInterface $logger = null){
 		parent::__construct($options, $logger);
 
-		$this->cachedir = \rtrim($this->options->cacheFilestorage, '/\\').\DIRECTORY_SEPARATOR;
+		$this->cachedir = rtrim($this->options->cacheFilestorage, '/\\').DIRECTORY_SEPARATOR;
 
-		if(!\is_dir($this->cachedir)){
+		if(!is_dir($this->cachedir)){
 			$msg = 'invalid cachedir "'.$this->cachedir.'"';
 
 			$this->logger->error($msg);
 			throw new CacheException($msg);
 		}
 
-		if(!\is_writable($this->cachedir)){
+		if(!is_writable($this->cachedir)){
 			$msg = 'cachedir is read-only. permissions?';
 
 			$this->logger->error($msg);
@@ -53,17 +58,17 @@ class FileCache extends CacheDriverAbstract{
 	public function get($key, $default = null){
 		$filename = $this->getFilepath($this->checkKey($key));
 
-		if(\is_file($filename)){
-			$content = \file_get_contents($filename);
+		if(is_file($filename)){
+			$content = file_get_contents($filename);
 
 			if(!empty($content)){
-				$data = \unserialize($content);
+				$data = unserialize($content);
 
-				if($data->ttl === null || $data->ttl > \time()){
+				if($data->ttl === null || $data->ttl > time()){
 					return $data->content;
 				}
 
-				\unlink($filename);
+				unlink($filename);
 			}
 
 		}
@@ -76,10 +81,10 @@ class FileCache extends CacheDriverAbstract{
 		$ttl = $this->getTTL($ttl);
 
 		$file = $this->getFilepath($this->checkKey($key));
-		$dir  = \dirname($file);
+		$dir  = dirname($file);
 
-		if(!\is_dir($dir)){
-			\mkdir($dir, 0755, true);
+		if(!is_dir($dir)){
+			mkdir($dir, 0755, true);
 		}
 
 		$data          = new stdClass;
@@ -87,12 +92,12 @@ class FileCache extends CacheDriverAbstract{
 		$data->content = $value;
 
 		if($ttl !== null){
-			$data->ttl = \time() + $ttl;
+			$data->ttl = time() + $ttl;
 		}
 
-		\file_put_contents($file, \serialize($data));
+		file_put_contents($file, serialize($data));
 
-		if(\is_file($file)){
+		if(is_file($file)){
 			return true;
 		}
 
@@ -103,8 +108,8 @@ class FileCache extends CacheDriverAbstract{
 	public function delete($key):bool{
 		$filename = $this->getFilepath($this->checkKey($key));
 
-		if(\is_file($filename)){
-			return \unlink($filename);
+		if(is_file($filename)){
+			return unlink($filename);
 		}
 
 		return false;
@@ -118,11 +123,11 @@ class FileCache extends CacheDriverAbstract{
 		foreach(new RecursiveIteratorIterator($iterator) as $path){
 
 			// skip files in the parent directory - cache files are only under /a/ab/[hash]
-			if(\strpos(\str_replace($this->cachedir, '', $path), \DIRECTORY_SEPARATOR) === false){
+			if(strpos(str_replace($this->cachedir, '', $path), DIRECTORY_SEPARATOR) === false){
 				continue;
 			}
 
-			$return[] = \unlink($path);
+			$return[] = unlink($path);
 		}
 
 		return $this->checkReturn($return); // @codeCoverageIgnore
@@ -134,9 +139,9 @@ class FileCache extends CacheDriverAbstract{
 	 * @return string
 	 */
 	protected function getFilepath(string $key):string{
-		$h = \hash('sha256', $key);
+		$h = hash('sha256', $key);
 
-		return $this->cachedir.$h[0].\DIRECTORY_SEPARATOR.$h[0].$h[1].\DIRECTORY_SEPARATOR.$h;
+		return $this->cachedir.$h[0].DIRECTORY_SEPARATOR.$h[0].$h[1].DIRECTORY_SEPARATOR.$h;
 	}
 
 }

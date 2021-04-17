@@ -15,6 +15,9 @@ namespace chillerlan\SimpleCacheTest;
 use chillerlan\SimpleCache\{CacheOptions, FileCache};
 use Psr\SimpleCache\CacheException;
 
+use function file_exists, file_put_contents, mkdir;
+use const PHP_OS_FAMILY;
+
 class FileCacheTest extends SimpleCacheTestAbstract{
 
 	protected const CACHEDIR = __DIR__.'/../.build/cache/';
@@ -22,8 +25,8 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 
 	protected function setUp():void{
 
-		if(!\file_exists($this::CACHEDIR)){
-			\mkdir($this::CACHEDIR, 0777, true);
+		if(!file_exists($this::CACHEDIR)){
+			mkdir($this::CACHEDIR, 0777, true);
 		}
 
 		$this->cache = new FileCache(new CacheOptions([
@@ -40,7 +43,7 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 
 	public function testFileCacheDirnotWritableException(){
 
-		if(\PHP_OS_FAMILY === 'Windows'){
+		if(PHP_OS_FAMILY === 'Windows'){
 			$this->markTestSkipped('Windows');
 			return;
 		}
@@ -50,7 +53,7 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 
 		$dir = $this::READONLY;
 
-		\mkdir($dir, 0000);
+		mkdir($dir, 0000);
 
 		$c = new FileCache(new CacheOptions(['cacheFilestorage' => $dir]));
 	}
@@ -58,12 +61,12 @@ class FileCacheTest extends SimpleCacheTestAbstract{
 	public function testClearIgnoresParentDirectory(){
 		$nodelete = $this::CACHEDIR.'some-file.txt';
 
-		\file_put_contents($this::CACHEDIR.'some-file.txt', 'text');
+		file_put_contents($this::CACHEDIR.'some-file.txt', 'text');
 
 		$this->cache->set('foo', 'bar');
 		$this->cache->clear();
 
-		self::assertTrue(\file_exists($nodelete));
+		self::assertTrue(file_exists($nodelete));
 	}
 
 }

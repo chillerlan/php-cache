@@ -18,6 +18,8 @@ use chillerlan\Settings\SettingsContainerInterface;
 use Memcached;
 use Psr\Log\LoggerInterface;
 
+use function array_keys;
+
 class MemcachedCache extends CacheDriverAbstract{
 
 	protected Memcached $memcached;
@@ -91,7 +93,7 @@ class MemcachedCache extends CacheDriverAbstract{
 	public function setMultiple($values, $ttl = null):bool{
 		$values = $this->getData($values);
 
-		$this->checkKeyArray(\array_keys($values));
+		$this->checkKeyArray(array_keys($values));
 
 		return $this->memcached->setMulti($values, $this->getTTL($ttl) ?? 0);
 	}

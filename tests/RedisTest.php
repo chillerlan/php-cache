@@ -17,11 +17,13 @@ namespace chillerlan\SimpleCacheTest;
 use chillerlan\SimpleCache\RedisCache;
 use Redis;
 
+use function defined, extension_loaded;
+
 class RedisTest extends SimpleCacheTestAbstract{
 
 	protected function setUp():void{
 
-		if(!\extension_loaded('redis')){
+		if(!extension_loaded('redis')){
 			$this->markTestSkipped('Redis not installed/enabled');
 
 			return;

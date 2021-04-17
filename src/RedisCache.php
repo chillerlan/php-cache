@@ -18,6 +18,8 @@ use chillerlan\Settings\SettingsContainerInterface;
 use Psr\Log\LoggerInterface;
 use Redis;
 
+use function array_combine, array_keys;
+
 class RedisCache extends CacheDriverAbstract{
 
 	protected Redis $redis;
@@ -71,7 +73,7 @@ class RedisCache extends CacheDriverAbstract{
 		$this->checkKeyArray($keys);
 
 		// scary
-		$values = \array_combine($keys, $this->redis->mget($keys));
+		$values = array_combine($keys, $this->redis->mget($keys));
 		$return = [];
 
 		foreach($keys as $key){
@@ -88,7 +90,7 @@ class RedisCache extends CacheDriverAbstract{
 		$ttl    = $this->getTTL($ttl);
 
 		if($ttl === null){
-			$this->checkKeyArray(\array_keys($values));
+			$this->checkKeyArray(array_keys($values));
 
 			return $this->redis->msetnx($values);
 		}

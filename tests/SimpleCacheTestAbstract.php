@@ -18,6 +18,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\{CacheInterface, InvalidArgumentException};
 use DateInterval, stdClass;
 
+use function sleep;
+
 abstract class SimpleCacheTestAbstract extends TestCase{
 
 	protected CacheInterface $cache;
@@ -37,7 +39,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		self::assertSame('nope', $this->cache->get('what'));
 		self::assertSame('wait', $this->cache->get('oh'));
 
-		\sleep(3);
+		sleep(3);
 
 		self::assertFalse($this->cache->has('what'));
 		self::assertFalse($this->cache->has('oh'));
@@ -102,7 +104,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		self::assertTrue($this->cache->setMultiple(['k2ttl' => 'v2ttl'], 2));
 		self::assertSame(['k1ttl' => 'v1ttl', 'k2ttl' => 'v2ttl'], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
 
-		\sleep(3);
+		sleep(3);
 
 		self::assertSame(['k1ttl' => null, 'k2ttl' => null], $this->cache->getMultiple(['k1ttl', 'k2ttl']));
 	}

@@ -12,6 +12,8 @@
 
 namespace chillerlan\SimpleCache;
 
+use function time;
+
 class MemoryCache extends CacheDriverAbstract{
 
 	protected array $cache = [];
@@ -22,7 +24,7 @@ class MemoryCache extends CacheDriverAbstract{
 
 		if(isset($this->cache[$key])){
 
-			if($this->cache[$key]['ttl'] === null || $this->cache[$key]['ttl'] > \time()){
+			if($this->cache[$key]['ttl'] === null || $this->cache[$key]['ttl'] > time()){
 				return $this->cache[$key]['content'];
 			}
 
@@ -37,7 +39,7 @@ class MemoryCache extends CacheDriverAbstract{
 		$ttl = $this->getTTL($ttl);
 
 		$this->cache[$this->checkKey($key)] = [
-			'ttl'     => $ttl ? \time() + $ttl : null,
+			'ttl'     => $ttl ? time() + $ttl : null,
 			'content' => $value,
 		];
 
