@@ -2,9 +2,7 @@
 /**
  * Class SimpleCacheTestAbstract
  *
- * @filesource   SimpleCacheTestAbstract.php
  * @created      25.05.2017
- * @package      chillerlan\SimpleCacheTest
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2017 Smiley
  * @license      MIT
