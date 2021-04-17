@@ -33,7 +33,7 @@ before_script:
   - echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
-  - vendor/bin/phpunit --configuration phpunit.xml --coverage-clover clover.xml
+  - vendor/bin/phpunit --configuration phpunit.xml
   - vendor/bin/phan
 
 after_success: bash <(curl -s https://codecov.io/bash)
