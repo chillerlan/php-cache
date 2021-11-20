@@ -5,7 +5,6 @@ A psr/simple-cache implementation for PHP 7.4+.
 [![PHP Version Support][php-badge]][php]
 [![version][packagist-badge]][packagist]
 [![license][license-badge]][license]
-[![Travis][travis-badge]][travis]
 [![Coverage][coverage-badge]][coverage]
 [![Scrunitizer][scrutinizer-badge]][scrutinizer]
 [![Packagist downloads][downloads-badge]][downloads]<br/>
@@ -18,8 +17,6 @@ A psr/simple-cache implementation for PHP 7.4+.
 [packagist]: https://packagist.org/packages/chillerlan/php-cache
 [license-badge]: https://img.shields.io/github/license/chillerlan/php-cache.svg
 [license]: https://github.com/chillerlan/php-cache/blob/master/LICENSE
-[travis-badge]: https://img.shields.io/travis/com/chillerlan/php-cache.svg?logo=travis
-[travis]: https://travis-ci.com/chillerlan/php-cache
 [coverage-badge]: https://img.shields.io/codecov/c/github/chillerlan/php-cache.svg?logo=codecov
 [coverage]: https://codecov.io/github/chillerlan/php-cache
 [scrutinizer-badge]: https://img.shields.io/scrutinizer/g/chillerlan/php-cache.svg?logo=scrutinizer
