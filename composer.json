@@ -41,5 +41,14 @@
 	},
 	"provide": {
 		"psr/simple-cache-implementation": "1.0"
+	},
+	"scripts": {
+		"phpunit": "@php vendor/bin/phpunit",
+		"phan": "@php vendor/bin/phan"
+	},
+	"config": {
+		"lock": false,
+		"sort-packages": true,
+		"platform-check": true
 	}
 }
