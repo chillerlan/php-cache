@@ -76,7 +76,7 @@ $cache = new MemcachedCache($memcached);
 $cache = new APCUCache;
 
 // File
-$cache = new FileCache(new CacheOptions(['filestorage' => __DIR__.'/../.cache']));
+$cache = new FileCache(new CacheOptions(['cacheFilestorage' => __DIR__.'/../.cache']));
 
 // Session
 $cache = new SessionCache(new CacheOptions(['cachekey' => '_my_session_cache']));
