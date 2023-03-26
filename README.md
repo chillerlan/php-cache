@@ -1,6 +1,6 @@
 # chillerlan/php-cache
 
-A psr/simple-cache implementation for PHP 7.4+.
+A psr/simple-cache implementation for PHP 8.1+.
 
 [![PHP Version Support][php-badge]][php]
 [![version][packagist-badge]][packagist]
@@ -31,7 +31,7 @@ A psr/simple-cache implementation for PHP 7.4+.
   - non-persistent: Session, Memory
 
 ## Requirements
-- **PHP 7.4+**
+- **PHP 8.1+**
   - optionally one of the following extensions
     - [Memcached](http://php.net/manual/en/book.memcached.php)
     - [Redis](https://github.com/phpredis/phpredis/)
@@ -47,7 +47,7 @@ In case you want to include it elsewhere, just add the following to your *compos
 ```json
 {
 	"require": {
-		"php": "^7.4 || ^8.0",
+		"php": "^^8.1",
 		"chillerlan/php-cache": "dev-main"
 	}
 }
@@ -76,7 +76,7 @@ $cache = new MemcachedCache($memcached);
 $cache = new APCUCache;
 
 // File
-$cache = new FileCache(new CacheOptions(['cacheFilestorage' => __DIR__.'/../.cache']));
+$cache = new FileCache(new CacheOptions(['filestorage' => __DIR__.'/../.cache']));
 
 // Session
 $cache = new SessionCache(new CacheOptions(['cachekey' => '_my_session_cache']));
