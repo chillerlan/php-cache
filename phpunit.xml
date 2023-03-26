@@ -8,6 +8,8 @@
 	<testsuites>
 		<testsuite name="php-cache test suite">
 			<directory suffix=".php">./tests</directory>
+			<exclude>tests/NonpersistentTestAbstract.php</exclude>
+			<exclude>tests/SimpleCacheTestAbstract.php</exclude>
 		</testsuite>
 	</testsuites>
 	<coverage>
