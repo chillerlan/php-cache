@@ -49,6 +49,7 @@ jobs:
 
   build-docs:
     name: "Build and publish Docs"
+    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
 
     steps:
@@ -76,7 +77,7 @@ jobs:
 
   tests:
     name: "Unit Tests"
-
+    needs: static-code-analysis
     runs-on: ubuntu-latest
 
     strategy:
