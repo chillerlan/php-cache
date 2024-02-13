@@ -23,6 +23,7 @@ jobs:
         php-version:
           - "8.1"
           - "8.2"
+          - "8.3"
 
     env:
       PHAN_ALLOW_XDEBUG: 0
@@ -59,13 +60,13 @@ jobs:
       - name: "Install PHP"
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.4"
+          php-version: "8.1"
           coverage: none
           tools: phpDocumentor
           extensions: apcu, memcached, redis
 
       - name: "Build Docs"
-        run: phpdoc --config=phpdoc.xml
+        run: phpdoc --config=phpdoc.xml.dist
 
       - name: "Publish Docs to gh-pages"
         uses: JamesIves/github-pages-deploy-action@v4
@@ -86,6 +87,7 @@ jobs:
         php-version:
           - "8.1"
           - "8.2"
+          - "8.3"
 
     steps:
       - name: "Checkout"
@@ -111,7 +113,7 @@ jobs:
         uses: ramsey/composer-install@v2
 
       - name: "Run tests with phpunit"
-        run: php vendor/phpunit/phpunit/phpunit --configuration=phpunit.xml
+        run: php vendor/phpunit/phpunit/phpunit --configuration=phpunit.xml.dist
 
       - name: "Send code coverage report to Codecov.io"
         uses: codecov/codecov-action@v3

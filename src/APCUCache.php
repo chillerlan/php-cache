@@ -12,7 +12,7 @@
 
 namespace chillerlan\SimpleCache;
 
-use function apcu_clear_cache, apcu_delete, apcu_fetch, apcu_store;
+use function apcu_clear_cache, apcu_delete, apcu_fetch, apcu_store, implode, is_array, is_bool, sprintf;
 
 class APCUCache extends CacheDriverAbstract{
 
@@ -27,14 +27,40 @@ class APCUCache extends CacheDriverAbstract{
 		return $default;
 	}
 
-	/** @inheritdoc */
+	/**
+	 * @inheritdoc
+	 * @throws \Psr\SimpleCache\CacheException
+	 */
 	public function set($key, $value, $ttl = null):bool{
-		return (bool)apcu_store($this->checkKey($key), $value, $this->getTTL($ttl) ?? 0);
+		$ret = apcu_store($this->checkKey($key), $value, $this->getTTL($ttl) ?? 0);
+
+		if(is_bool($ret)){
+			return $ret;
+		}
+
+		if(is_array($ret)){
+			throw new CacheException(sprintf('error keys: %s', implode(', ', $ret)));
+		}
+
+		throw new CacheException('unknown apcu_store() error');
 	}
 
-	/** @inheritdoc */
+	/**
+	 * @inheritdoc
+	 * @throws \chillerlan\SimpleCache\CacheException
+	 */
 	public function delete($key):bool{
-		return (bool)apcu_delete($this->checkKey($key));
+		$ret = apcu_delete($this->checkKey($key));
+
+		if(is_bool($ret)){
+			return $ret;
+		}
+
+		if(is_array($ret)){
+			throw new CacheException(sprintf('error keys: %s', implode(', ', $ret)));
+		}
+
+		throw new CacheException('unknown apcu_delete() error');
 	}
 
 	/** @inheritdoc */

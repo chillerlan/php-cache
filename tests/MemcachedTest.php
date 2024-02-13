@@ -20,11 +20,12 @@ use Psr\SimpleCache\CacheException;
 class MemcachedTest extends SimpleCacheTestAbstract{
 
 	protected function setUp():void{
-		parent::setUp();
 
 		if(!extension_loaded('memcached')){
 			$this->markTestSkipped('Memcached not installed/enabled');
 		}
+
+		parent::setUp();
 
 		$memcached = new Memcached('test');
 		$memcached->addServer('localhost', 11211);
