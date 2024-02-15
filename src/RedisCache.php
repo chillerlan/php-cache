@@ -77,14 +77,7 @@ class RedisCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function delete($key):bool{
-		$ret = $this->redis->del($this->checkKey($key));
-
-		// we'll always return true on an integer result - operation was successful
-		if(is_int($ret)){
-			return true;
-		}
-
-		return $ret;
+		return (bool)$this->redis->del($this->checkKey($key));;
 	}
 
 	/** @inheritdoc */
@@ -131,13 +124,8 @@ class RedisCache extends CacheDriverAbstract{
 	/** @inheritdoc */
 	public function deleteMultiple($keys):bool{
 		$keys = $this->checkKeyArray($this->fromIterable($keys));
-		$ret  = $this->redis->del($keys);
 
-		if(is_int($ret)){
-			return true;
-		}
-
-		return $ret;
+		return (bool)$this->redis->del($keys);
 	}
 
 }
