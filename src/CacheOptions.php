@@ -8,13 +8,14 @@
  * @license      MIT
  */
 
+declare(strict_types=1);
+
 namespace chillerlan\SimpleCache;
 
 use chillerlan\Settings\SettingsContainerAbstract;
 
 /**
- * @property string $cacheFilestorage
- * @property string $cacheSessionkey
+ *
  */
 class CacheOptions extends SettingsContainerAbstract{
 	use CacheOptionsTrait;

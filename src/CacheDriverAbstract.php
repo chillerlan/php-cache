@@ -10,29 +10,30 @@
  * @phan-file-suppress PhanTypeInvalidThrowsIsInterface
  */
 
+declare(strict_types=1);
+
 namespace chillerlan\SimpleCache;
 
 use chillerlan\Settings\SettingsContainerInterface;
 use Psr\Log\{LoggerAwareInterface, LoggerAwareTrait, LoggerInterface, NullLogger};
 use Psr\SimpleCache\CacheInterface;
-use DateInterval, DateTime, Traversable;
-
-use function  is_array, is_int, is_string, iterator_to_array, time;
+use DateInterval, DateTime, InvalidArgumentException, Traversable;
+use function is_array, is_int, is_string, iterator_to_array, time;
 
 abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterface{
 	use LoggerAwareTrait;
 
-	/**
-	 * @var \chillerlan\Settings\SettingsContainerInterface|\chillerlan\SimpleCache\CacheOptions
-	 */
-	protected SettingsContainerInterface $options;
+	protected SettingsContainerInterface|CacheOptions $options;
 
 	/**
 	 * CacheDriverAbstract constructor.
 	 */
-	public function __construct(SettingsContainerInterface $options = null, LoggerInterface $logger = null){
-		$this->options = $options ?? new CacheOptions;
-		$this->logger  = $logger ?? new NullLogger;
+	public function __construct(
+		SettingsContainerInterface|CacheOptions $options = new CacheOptions,
+		LoggerInterface $logger = new NullLogger
+	){
+		$this->options = $options;
+		$this->logger  = $logger;
 	}
 
 	/** @inheritdoc */
@@ -44,7 +45,7 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	public function getMultiple($keys, $default = null):array{
 		$data = [];
 
-		foreach($this->getData($keys) as $key){
+		foreach($this->fromIterable($keys) as $key){
 			$data[$key] = $this->get($key, $default);
 		}
 
@@ -55,7 +56,7 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	public function setMultiple($values, $ttl = null):bool{
 		$return = [];
 
-		foreach($this->getData($values) as $key => $value){
+		foreach($this->fromIterable($values) as $key => $value){
 			$return[] = $this->set($key, $value, $ttl);
 		}
 
@@ -66,7 +67,7 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	public function deleteMultiple($keys):bool{
 		$return = [];
 
-		foreach($this->getData($keys) as $key){
+		foreach($this->fromIterable($keys) as $key){
 			$return[] = $this->delete($key);
 		}
 
@@ -74,12 +75,9 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	}
 
 	/**
-	 * @param string|mixed $key
-	 *
-	 * @return string
-	 * @throws \Psr\SimpleCache\InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
-	protected function checkKey($key):string{
+	protected function checkKey(mixed $key):string{
 
 		if(!is_string($key) || empty($key)){
 			throw new InvalidArgumentException('invalid cache key: "'.$key.'"');
@@ -88,59 +86,48 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 		return $key;
 	}
 
-	/**
-	 * @param array $keys
-	 *
-	 * @return void
-	 */
-	protected function checkKeyArray(array $keys):void{
+	/**  */
+	protected function checkKeyArray(array $keys):array{
 
 		foreach($keys as $key){
 			$this->checkKey($key);
 		}
 
+		return $keys;
 	}
 
 	/**
-	 * @param mixed $data
-	 *
-	 * @return array
-	 * @throws \Psr\SimpleCache\InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
-	protected function getData($data):array{
+	protected function fromIterable(iterable $data):array{
 
 		if(is_array($data)){
 			return $data;
 		}
-		elseif($data instanceof Traversable){
+
+		if($data instanceof Traversable){
 			return iterator_to_array($data); // @codeCoverageIgnore
 		}
 
 		throw new InvalidArgumentException('invalid data');
 	}
 
-	/**
-	 * @param mixed $ttl
-	 *
-	 * @return int|null
-	 * @throws \Psr\SimpleCache\InvalidArgumentException
-	 */
-	protected function getTTL($ttl):?int{
+	/**  */
+	protected function getTTL(DateInterval|int|null $ttl):?int{
 
 		if($ttl instanceof DateInterval){
-			return (new DateTime)->add($ttl)->getTimeStamp() - time();
+			return ((new DateTime)->add($ttl)->getTimeStamp() - time());
 		}
-		else if((is_int($ttl) && $ttl > 0) || $ttl === null){
+
+		if((is_int($ttl) && $ttl > 0)){
 			return $ttl;
 		}
 
-		throw new InvalidArgumentException('invalid ttl');
+		return null;
 	}
 
 	/**
-	 * @param bool[] $booleans
-	 *
-	 * @return bool
+	 * @param bool[]|int[] $booleans
 	 */
 	protected function checkReturn(array $booleans):bool{
 

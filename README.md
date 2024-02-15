@@ -30,9 +30,9 @@ A psr/simple-cache implementation for PHP 8.1+.
 ## Requirements
 - **PHP 8.1+**
   - optionally one of the following extensions
-    - [Memcached](http://php.net/manual/en/book.memcached.php)
+    - [Memcached](https://www.php.net/manual/en/book.memcached.php)
     - [Redis](https://github.com/phpredis/phpredis/)
-    - [APCU](http://php.net/manual/en/book.apcu.php)
+    - [APCU](https://www.php.net/manual/en/book.apcu.php)
 
 ## Documentation
 ### Installation using [composer](https://getcomposer.org)
@@ -40,11 +40,11 @@ You can simply clone the repo and run `composer install` in the root directory.
 In case you want to include it elsewhere, just add the following to your *composer.json*:
 
 (note: replace `dev-main` with a [version constraint](https://getcomposer.org/doc/articles/versions.md#writing-version-constraints),
- e.g. `^3.1` - see [releases](https://github.com/chillerlan/php-cache/releases) for valid versions)
+ e.g. `^4.1` - see [releases](https://github.com/chillerlan/php-cache/releases) for valid versions)
 ```json
 {
 	"require": {
-		"php": "^^8.1",
+		"php": "^8.1",
 		"chillerlan/php-cache": "dev-main"
 	}
 }
@@ -73,10 +73,10 @@ $cache = new MemcachedCache($memcached);
 $cache = new APCUCache;
 
 // File
-$cache = new FileCache(new CacheOptions(['filestorage' => __DIR__.'/../.cache']));
+$cache = new FileCache(new CacheOptions(['cacheFilestorage' => __DIR__.'/../.cache']));
 
 // Session
-$cache = new SessionCache(new CacheOptions(['cachekey' => '_my_session_cache']));
+$cache = new SessionCache(new CacheOptions(['cacheSessionkey' => '_my_session_cache']));
 
 // Memory
 $cache = new MemoryCache;

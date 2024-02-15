@@ -10,14 +10,22 @@
  * @noinspection PhpComposerExtensionStubsInspection
  */
 
+declare(strict_types=1);
+
 namespace chillerlan\SimpleCache;
 
 use function apcu_clear_cache, apcu_delete, apcu_fetch, apcu_store, implode, is_array, is_bool, sprintf;
 
+/**
+ * Implements a cache via the APCu extension
+ *
+ * @see https://www.php.net/manual/en/book.apcu.php
+ * @see https://github.com/krakjoe/apcu
+ */
 class APCUCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
-	public function get($key, $default = null){
+	public function get($key, $default = null):mixed{
 		$value = apcu_fetch($this->checkKey($key));
 
 		if($value !== false){
@@ -32,7 +40,7 @@ class APCUCache extends CacheDriverAbstract{
 	 * @throws \Psr\SimpleCache\CacheException
 	 */
 	public function set($key, $value, $ttl = null):bool{
-		$ret = apcu_store($this->checkKey($key), $value, $this->getTTL($ttl) ?? 0);
+		$ret = apcu_store($this->checkKey($key), $value, ($this->getTTL($ttl) ?? 0));
 
 		if(is_bool($ret)){
 			return $ret;

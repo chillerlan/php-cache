@@ -10,14 +10,15 @@
  * @phan-file-suppress PhanTypeMismatchArgument, PhanTypeMismatchArgumentProbablyReal
  */
 
+declare(strict_types=1);
+
 namespace chillerlan\SimpleCacheTest;
 
 use chillerlan\Settings\SettingsContainerInterface;
 use chillerlan\SimpleCache\CacheOptions;
 use PHPUnit\Framework\TestCase;
-use Psr\SimpleCache\{CacheInterface, InvalidArgumentException};
-use DateInterval, stdClass;
-
+use Psr\SimpleCache\CacheInterface;
+use DateInterval, InvalidArgumentException, stdClass, TypeError;
 use function sleep;
 
 abstract class SimpleCacheTestAbstract extends TestCase{
@@ -51,8 +52,8 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testSetInvalidTTLException():void{
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid ttl');
+		$this->expectException(TypeError::class);
+		$this->expectExceptionMessage('Argument #1 ($ttl) must be of type DateInterval|int|null');
 
 		$this->cache->set('.', '', new stdClass);
 	}
@@ -115,18 +116,10 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testSetMultipleInvalidTTLException():void{
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid ttl');
+		$this->expectException(TypeError::class);
+		$this->expectExceptionMessage('Argument #1 ($ttl) must be of type DateInterval|int|null');
 
 		$this->cache->setMultiple(['.' => ''], new stdClass);
-	}
-
-	public function testSetMultipleInvalidDataException():void{
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid data');
-
-		/** @noinspection PhpParamsInspection */
-		$this->cache->setMultiple('foo');
 	}
 
 	public function testSetMultipleInvalidKeyException():void{
@@ -138,14 +131,6 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 
 	public function testGetMultiple():void{
 		$this::assertSame(['k1' => 'v1', 'k2' => 'v2', 'k3' => 'v3'], $this->cache->getMultiple(['k1', 'k2', 'k3']));
-	}
-
-	public function testGetMultipleInvalidDataException():void{
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid data');
-
-		/** @noinspection PhpParamsInspection */
-		$this->cache->getMultiple('foo');
 	}
 
 	public function testGetMultipleInvalidKeyException():void{
@@ -161,14 +146,6 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this::assertFalse($this->cache->has('k1'));
 		$this::assertFalse($this->cache->has('k3'));
 		$this::assertTrue($this->cache->has('k2'));
-	}
-
-	public function testDeleteMultipleInvalidDataException():void{
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid data');
-
-		/** @noinspection PhpParamsInspection */
-		$this->cache->deleteMultiple('foo');
 	}
 
 	public function testDeleteMultipleInvalidKeyException():void{

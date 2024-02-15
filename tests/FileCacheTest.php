@@ -8,6 +8,8 @@
  * @license      MIT
  */
 
+declare(strict_types=1);
+
 namespace chillerlan\SimpleCacheTest;
 
 use chillerlan\SimpleCache\FileCache;
@@ -18,8 +20,8 @@ use const PHP_OS_FAMILY;
 
 class FileCacheTest extends SimpleCacheTestAbstract{
 
-	protected const CACHEDIR = __DIR__.'/.cache/';
-	protected const READONLY = __DIR__.'/.readonly/';
+	protected const CACHEDIR = __DIR__.'/../.build/.cache/';
+	protected const READONLY = __DIR__.'/../.build/.readonly/';
 
 	protected function setUp():void{
 		parent::setUp();

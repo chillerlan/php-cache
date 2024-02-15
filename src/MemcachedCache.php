@@ -11,14 +11,20 @@
  * @phan-file-suppress PhanUndeclaredClassMethod, PhanUndeclaredTypeProperty, PhanUndeclaredTypeParameter
  */
 
+declare(strict_types=1);
+
 namespace chillerlan\SimpleCache;
 
 use chillerlan\Settings\SettingsContainerInterface;
 use Memcached;
-use Psr\Log\LoggerInterface;
+use Psr\Log\{LoggerInterface, NullLogger};
+use function array_keys, extension_loaded;
 
-use function array_keys;
-
+/**
+ * Implements a cache via the Memcached extension
+ *
+ * @see https://www.php.net/manual/en/book.memcached.php
+ */
 class MemcachedCache extends CacheDriverAbstract{
 
 	protected Memcached $memcached;
@@ -26,13 +32,18 @@ class MemcachedCache extends CacheDriverAbstract{
 	/**
 	 * MemcachedCache constructor.
 	 *
-	 * @param \Memcached                                           $memcached
-	 * @param \chillerlan\Settings\SettingsContainerInterface|null $options
-	 * @param \Psr\Log\LoggerInterface|null                        $logger
-	 *
 	 * @throws \chillerlan\SimpleCache\CacheException
 	 */
-	public function __construct(Memcached $memcached, SettingsContainerInterface $options = null, LoggerInterface $logger = null){
+	public function __construct(
+		Memcached $memcached,
+		SettingsContainerInterface|CacheOptions $options = new CacheOptions,
+		LoggerInterface $logger = new NullLogger
+	){
+
+		if(!extension_loaded('memcached')){
+			throw new CacheException('Memcached not installed/enabled');
+		}
+
 		parent::__construct($options, $logger);
 
 		$this->memcached = $memcached;
@@ -56,7 +67,7 @@ class MemcachedCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function set($key, $value, $ttl = null):bool{
-		return $this->memcached->set($this->checkKey($key), $value, $this->getTTL($ttl) ?? 0);
+		return $this->memcached->set($this->checkKey($key), $value, ($this->getTTL($ttl) ?? 0));
 	}
 
 	/** @inheritdoc */
@@ -71,15 +82,12 @@ class MemcachedCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function getMultiple($keys, $default = null):array{
-		$keys = $this->getData($keys);
-
-		$this->checkKeyArray($keys);
-
+		$keys   = $this->checkKeyArray($this->fromIterable($keys));
 		$values = $this->memcached->getMulti($keys);
 		$return = [];
 
 		foreach($keys as $key){
-			$return[$key] = $values[$key] ?? $default;
+			$return[$key] = ($values[$key] ?? $default);
 		}
 
 		return $return;
@@ -87,18 +95,16 @@ class MemcachedCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function setMultiple($values, $ttl = null):bool{
-		$values = $this->getData($values);
+		$values = $this->fromIterable($values);
 
 		$this->checkKeyArray(array_keys($values));
 
-		return $this->memcached->setMulti($values, $this->getTTL($ttl) ?? 0);
+		return $this->memcached->setMulti($values, ($this->getTTL($ttl) ?? 0));
 	}
 
 	/** @inheritdoc */
 	public function deleteMultiple($keys):bool{
-		$keys = $this->getData($keys);
-
-		$this->checkKeyArray($keys);
+		$keys = $this->checkKeyArray($this->fromIterable($keys));
 
 		return $this->checkReturn($this->memcached->deleteMulti($keys));
 	}

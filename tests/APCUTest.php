@@ -8,6 +8,8 @@
  * @license      MIT
  */
 
+declare(strict_types=1);
+
 namespace chillerlan\SimpleCacheTest;
 
 use chillerlan\SimpleCache\APCUCache;
@@ -34,4 +36,5 @@ class APCUTest extends SimpleCacheTestAbstract{
 	public function testSetMultipleTTL():void{
 		$this->markTestIncomplete();
 	}
+
 }

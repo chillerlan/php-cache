@@ -11,22 +11,42 @@
  * @phan-file-suppress PhanUndeclaredClassMethod, PhanUndeclaredTypeProperty, PhanUndeclaredTypeParameter
  */
 
+declare(strict_types=1);
+
 namespace chillerlan\SimpleCache;
 
 use chillerlan\Settings\SettingsContainerInterface;
-use Psr\Log\LoggerInterface;
+use Psr\Log\{LoggerInterface, NullLogger};
 use Redis;
 
-use function array_combine, array_keys;
+use function array_combine, array_keys, extension_loaded, is_int;
 
+/**
+ * Implements a cache via Redis
+ *
+ * Note: this implementation ignores "multimode" entirely, which would return a Redis instance for every operation
+ *
+ * @see https://github.com/phpredis/phpredis/
+ */
 class RedisCache extends CacheDriverAbstract{
 
 	protected Redis $redis;
 
 	/**
 	 * RedisCache constructor.
+	 *
+	 * @throws \Psr\SimpleCache\CacheException
 	 */
-	public function __construct(Redis $redis, SettingsContainerInterface $options = null, LoggerInterface $logger = null){
+	public function __construct(
+		Redis $redis,
+		SettingsContainerInterface|CacheOptions $options = new CacheOptions,
+		LoggerInterface $logger = new NullLogger
+	){
+
+		if(!extension_loaded('redis')){
+			throw new CacheException('Redis not installed/enabled');
+		}
+
 		parent::__construct($options, $logger);
 
 		$this->redis = $redis;
@@ -57,7 +77,14 @@ class RedisCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function delete($key):bool{
-		return (bool)$this->redis->del($this->checkKey($key));
+		$ret = $this->redis->del($this->checkKey($key));
+
+		// we'll always return true on an integer result - operation was successful
+		if(is_int($ret)){
+			return true;
+		}
+
+		return $ret;
 	}
 
 	/** @inheritdoc */
@@ -67,9 +94,7 @@ class RedisCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function getMultiple($keys, $default = null):array{
-		$keys = $this->getData($keys);
-
-		$this->checkKeyArray($keys);
+		$keys = $this->checkKeyArray($this->fromIterable($keys));
 
 		// scary
 		$values = array_combine($keys, $this->redis->mget($keys));
@@ -77,7 +102,7 @@ class RedisCache extends CacheDriverAbstract{
 
 		foreach($keys as $key){
 			/** @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
-			$return[$key] = $values[$key] !== false ? $values[$key] : $default;
+			$return[$key] = ($values[$key] !== false) ? $values[$key] : $default;
 		}
 
 		return $return;
@@ -85,7 +110,7 @@ class RedisCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function setMultiple($values, $ttl = null):bool{
-		$values = $this->getData($values);
+		$values = $this->fromIterable($values);
 		$ttl    = $this->getTTL($ttl);
 
 		if($ttl === null){
@@ -105,11 +130,14 @@ class RedisCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
 	public function deleteMultiple($keys):bool{
-		$keys = $this->getData($keys);
+		$keys = $this->checkKeyArray($this->fromIterable($keys));
+		$ret  = $this->redis->del($keys);
 
-		$this->checkKeyArray($keys);
+		if(is_int($ret)){
+			return true;
+		}
 
-		return (bool)$this->redis->del($keys);
+		return $ret;
 	}
 
 }

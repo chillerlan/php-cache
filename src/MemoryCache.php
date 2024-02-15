@@ -8,10 +8,15 @@
  * @license      MIT
  */
 
+declare(strict_types=1);
+
 namespace chillerlan\SimpleCache;
 
 use function time;
 
+/**
+ * Implements a cache in memory
+ */
 class MemoryCache extends CacheDriverAbstract{
 
 	protected array $cache = [];
@@ -36,10 +41,11 @@ class MemoryCache extends CacheDriverAbstract{
 	public function set($key, $value, $ttl = null):bool{
 		$ttl = $this->getTTL($ttl);
 
-		$this->cache[$this->checkKey($key)] = [
-			'ttl'     => $ttl ? time() + $ttl : null,
-			'content' => $value,
-		];
+		if($ttl !== null){
+			$ttl = (time() + $ttl);
+		}
+
+		$this->cache[$this->checkKey($key)] = ['ttl' => $ttl, 'content' => $value];
 
 		return true;
 	}
