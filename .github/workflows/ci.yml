@@ -116,11 +116,13 @@ jobs:
         run: php vendor/phpunit/phpunit/phpunit --configuration=phpunit.xml.dist
 
       - name: "Send code coverage report to Codecov.io"
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
+        with:
+         token: ${{ secrets.CODECOV_TOKEN }}
+         files: .build/coverage/clover.xml
 
       - name: "Send code coverage report to Codacy"
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: .build/coverage/clover.xml
-
