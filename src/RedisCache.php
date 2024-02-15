@@ -19,7 +19,7 @@ use chillerlan\Settings\SettingsContainerInterface;
 use Psr\Log\{LoggerInterface, NullLogger};
 use Redis;
 
-use function array_combine, array_keys, extension_loaded, is_int;
+use function array_combine, array_keys, extension_loaded;
 
 /**
  * Implements a cache via Redis
