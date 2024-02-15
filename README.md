@@ -6,6 +6,7 @@ A psr/simple-cache implementation for PHP 8.1+.
 [![version][packagist-badge]][packagist]
 [![license][license-badge]][license]
 [![Coverage][coverage-badge]][coverage]
+[![Codacy][codacy-badge]][codacy]
 [![Packagist downloads][downloads-badge]][downloads]<br/>
 [![Continuous Integration][gh-action-badge]][gh-action]
 
@@ -17,6 +18,8 @@ A psr/simple-cache implementation for PHP 8.1+.
 [license]: https://github.com/chillerlan/php-cache/blob/master/LICENSE
 [coverage-badge]: https://img.shields.io/codecov/c/github/chillerlan/php-cache.svg?logo=codecov
 [coverage]: https://codecov.io/github/chillerlan/php-cache
+[codacy-badge]: https://img.shields.io/codacy/grade/69b19ba81ae6492f973c4f05b92884aa/main?logo=codacy
+[codacy]: https://app.codacy.com/gh/chillerlan/php-cache/dashboard?branch=main
 [downloads-badge]: https://img.shields.io/packagist/dt/chillerlan/php-cache.svg?logo=packagist
 [downloads]: https://packagist.org/packages/chillerlan/php-cache/stats
 [gh-action-badge]: https://github.com/chillerlan/php-cache/workflows/Continuous%20Integration/badge.svg
