@@ -10,7 +10,7 @@
 
 namespace chillerlan\SimpleCache;
 
-use function is_dir, is_writable, realpath, sprintf;
+use function is_dir, is_writable, realpath, rtrim, sprintf;
 use const DIRECTORY_SEPARATOR;
 
 trait CacheOptionsTrait{
@@ -29,6 +29,7 @@ trait CacheOptionsTrait{
 	 * @throws \Psr\SimpleCache\CacheException
 	 */
 	protected function set_cacheFilestorage(string $dir):void{
+		$dir = rtrim($dir, '\\/');
 
 		if(!is_dir($dir)){
 			throw new CacheException(sprintf('invalid cachedir "%s"', $dir));
