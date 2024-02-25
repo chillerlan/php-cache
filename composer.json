@@ -23,7 +23,7 @@
 	"require": {
 		"php": "^8.1",
 		"psr/log": "^1.1 || ^2.0 || ^3.0",
-		"psr/simple-cache": "^1.0",
+		"psr/simple-cache": "^1.0 || ^2.0 || ^3.0",
 		"chillerlan/php-settings-container": "^3.1"
 	},
 	"require-dev": {
