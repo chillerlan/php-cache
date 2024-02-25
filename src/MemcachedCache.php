@@ -16,8 +16,8 @@ declare(strict_types=1);
 namespace chillerlan\SimpleCache;
 
 use chillerlan\Settings\SettingsContainerInterface;
-use Memcached;
 use Psr\Log\{LoggerInterface, NullLogger};
+use DateInterval, Memcached;
 use function array_keys, extension_loaded;
 
 /**
@@ -55,7 +55,7 @@ class MemcachedCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function get($key, $default = null){
+	public function get(string $key, mixed $default = null):mixed{
 		$value = $this->memcached->get($this->checkKey($key));
 
 		if($value !== false){
@@ -66,12 +66,12 @@ class MemcachedCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function set($key, $value, $ttl = null):bool{
+	public function set(string $key, mixed $value, int|DateInterval|null $ttl = null):bool{
 		return $this->memcached->set($this->checkKey($key), $value, ($this->getTTL($ttl) ?? 0));
 	}
 
 	/** @inheritdoc */
-	public function delete($key):bool{
+	public function delete(string $key):bool{
 		return $this->memcached->delete($this->checkKey($key));
 	}
 
@@ -81,7 +81,7 @@ class MemcachedCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function getMultiple($keys, $default = null):array{
+	public function getMultiple(iterable $keys, mixed $default = null):iterable{
 		$keys   = $this->checkKeyArray($this->fromIterable($keys));
 		$values = $this->memcached->getMulti($keys);
 		$return = [];
@@ -94,7 +94,7 @@ class MemcachedCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function setMultiple($values, $ttl = null):bool{
+	public function setMultiple(iterable $values, int|DateInterval|null $ttl = null):bool{
 		$values = $this->fromIterable($values);
 
 		$this->checkKeyArray(array_keys($values));
@@ -103,7 +103,7 @@ class MemcachedCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function deleteMultiple($keys):bool{
+	public function deleteMultiple(iterable $keys):bool{
 		$keys = $this->checkKeyArray($this->fromIterable($keys));
 
 		return $this->checkReturn($this->memcached->deleteMulti($keys));

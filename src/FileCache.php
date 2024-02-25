@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace chillerlan\SimpleCache;
 
-use FilesystemIterator, RecursiveDirectoryIterator, RecursiveIteratorIterator, stdClass;
+use DateInterval, FilesystemIterator, RecursiveDirectoryIterator, RecursiveIteratorIterator, stdClass;
 use function dirname, file_get_contents, file_put_contents, hash, is_dir,
 	is_file, mkdir, serialize, str_replace, substr, time, unlink, unserialize;
 use const DIRECTORY_SEPARATOR;
@@ -20,7 +20,7 @@ use const DIRECTORY_SEPARATOR;
 class FileCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
-	public function get($key, $default = null):mixed{
+	public function get(string $key, mixed $default = null):mixed{
 		$filename = $this->getFilepath($key);
 
 		if(is_file($filename)){
@@ -42,7 +42,7 @@ class FileCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function set($key, $value, $ttl = null):bool{
+	public function set(string $key, mixed $value, int|DateInterval|null $ttl = null):bool{
 		$ttl  = $this->getTTL($ttl);
 		$file = $this->getFilepath($key);
 		$dir  = dirname($file);
@@ -69,7 +69,7 @@ class FileCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function delete($key):bool{
+	public function delete(string $key):bool{
 		$filename = $this->getFilepath($key);
 
 		if(is_file($filename)){

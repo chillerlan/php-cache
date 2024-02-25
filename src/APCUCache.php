@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace chillerlan\SimpleCache;
 
+use DateInterval;
 use function apcu_clear_cache, apcu_delete, apcu_fetch, apcu_store, implode, is_array, is_bool, sprintf;
 
 /**
@@ -25,7 +26,7 @@ use function apcu_clear_cache, apcu_delete, apcu_fetch, apcu_store, implode, is_
 class APCUCache extends CacheDriverAbstract{
 
 	/** @inheritdoc */
-	public function get($key, $default = null):mixed{
+	public function get(string $key, mixed $default = null):mixed{
 		$value = apcu_fetch($this->checkKey($key));
 
 		if($value !== false){
@@ -39,7 +40,7 @@ class APCUCache extends CacheDriverAbstract{
 	 * @inheritdoc
 	 * @throws \Psr\SimpleCache\CacheException
 	 */
-	public function set($key, $value, $ttl = null):bool{
+	public function set(string $key, mixed $value, int|DateInterval|null $ttl = null):bool{
 		$ret = apcu_store($this->checkKey($key), $value, ($this->getTTL($ttl) ?? 0));
 
 		if(is_bool($ret)){
@@ -57,7 +58,7 @@ class APCUCache extends CacheDriverAbstract{
 	 * @inheritdoc
 	 * @throws \chillerlan\SimpleCache\CacheException
 	 */
-	public function delete($key):bool{
+	public function delete(string $key):bool{
 		$ret = apcu_delete($this->checkKey($key));
 
 		if(is_bool($ret)){

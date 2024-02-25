@@ -17,7 +17,7 @@ namespace chillerlan\SimpleCache;
 
 use chillerlan\Settings\SettingsContainerInterface;
 use Psr\Log\{LoggerInterface, NullLogger};
-use Redis;
+use DateInterval, Redis;
 
 use function array_combine, array_keys, extension_loaded;
 
@@ -53,7 +53,7 @@ class RedisCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function get($key, $default = null){
+	public function get(string $key, mixed $default = null):mixed{
 		$value = $this->redis->get($this->checkKey($key));
 
 		if($value !== false){
@@ -64,7 +64,7 @@ class RedisCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function set($key, $value, $ttl = null):bool{
+	public function set(string $key, mixed $value, int|DateInterval|null $ttl = null):bool{
 		$key = $this->checkKey($key);
 		$ttl = $this->getTTL($ttl);
 
@@ -76,7 +76,7 @@ class RedisCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function delete($key):bool{
+	public function delete(string $key):bool{
 		return (bool)$this->redis->del($this->checkKey($key));;
 	}
 
@@ -86,7 +86,7 @@ class RedisCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function getMultiple($keys, $default = null):array{
+	public function getMultiple(iterable $keys, mixed $default = null):iterable{
 		$keys = $this->checkKeyArray($this->fromIterable($keys));
 
 		// scary
@@ -102,7 +102,7 @@ class RedisCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function setMultiple($values, $ttl = null):bool{
+	public function setMultiple(iterable $values, int|DateInterval|null $ttl = null):bool{
 		$values = $this->fromIterable($values);
 		$ttl    = $this->getTTL($ttl);
 
@@ -122,7 +122,7 @@ class RedisCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function deleteMultiple($keys):bool{
+	public function deleteMultiple(iterable $keys):bool{
 		$keys = $this->checkKeyArray($this->fromIterable($keys));
 
 		return (bool)$this->redis->del($keys);

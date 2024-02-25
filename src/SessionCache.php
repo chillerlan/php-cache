@@ -14,6 +14,7 @@ namespace chillerlan\SimpleCache;
 
 use chillerlan\Settings\SettingsContainerInterface;
 use Psr\Log\{LoggerInterface, NullLogger};
+use DateInterval;
 
 use function time;
 
@@ -45,7 +46,7 @@ class SessionCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function get($key, $default = null){
+	public function get(string $key, mixed $default = null):mixed{
 		$key = $this->checkKey($key);
 
 		if(isset($_SESSION[$this->name][$key])){
@@ -61,7 +62,7 @@ class SessionCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function set($key, $value, $ttl = null):bool{
+	public function set(string $key, mixed $value, int|DateInterval|null $ttl = null):bool{
 		$ttl = $this->getTTL($ttl);
 
 		if($ttl !== null){
@@ -74,7 +75,7 @@ class SessionCache extends CacheDriverAbstract{
 	}
 
 	/** @inheritdoc */
-	public function delete($key):bool{
+	public function delete(string $key):bool{
 		unset($_SESSION[$this->name][$this->checkKey($key)]);
 
 		return true;

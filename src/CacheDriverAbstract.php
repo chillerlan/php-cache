@@ -37,12 +37,12 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	}
 
 	/** @inheritdoc */
-	public function has($key):bool{
+	public function has(string $key):bool{
 		return $this->get($key) !== null;
 	}
 
 	/** @inheritdoc */
-	public function getMultiple($keys, $default = null):array{
+	public function getMultiple(iterable $keys, mixed $default = null):iterable{
 		$data = [];
 
 		foreach($this->fromIterable($keys) as $key){
@@ -53,7 +53,7 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	}
 
 	/** @inheritdoc */
-	public function setMultiple($values, $ttl = null):bool{
+	public function setMultiple(iterable $values, int|DateInterval|null $ttl = null):bool{
 		$return = [];
 
 		foreach($this->fromIterable($values) as $key => $value){
@@ -64,7 +64,7 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	}
 
 	/** @inheritdoc */
-	public function deleteMultiple($keys):bool{
+	public function deleteMultiple(iterable $keys):bool{
 		$return = [];
 
 		foreach($this->fromIterable($keys) as $key){
@@ -77,10 +77,10 @@ abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterfa
 	/**
 	 * @throws \InvalidArgumentException
 	 */
-	protected function checkKey(mixed $key):string{
+	protected function checkKey(string $key):string{
 
-		if(!is_string($key) || empty($key)){
-			throw new InvalidArgumentException('invalid cache key: "'.$key.'"');
+		if(empty($key)){
+			throw new InvalidArgumentException('cache key is empty');
 		}
 
 		return $key;
