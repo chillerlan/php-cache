@@ -6,17 +6,25 @@ name: "Continuous Integration"
 on:
   push:
     branches:
-      - main
+      - v4.x
   pull_request:
     branches:
-      - main
+      - v4.x
 
 jobs:
 
   static-code-analysis:
     name: "Static Code Analysis"
-
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php-version:
+          - "7.4"
+          - "8.1"
+          - "8.2"
+          - "8.3"
 
     env:
       PHAN_ALLOW_XDEBUG: 0
@@ -24,25 +32,25 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: "Install PHP"
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.4"
+          php-version: ${{ matrix.php-version }}
           tools: pecl
           coverage: none
           extensions: ast, apcu, memcached, redis
 
       - name: "Update dependencies with composer"
-        run: composer update --no-interaction --no-ansi --no-progress --no-suggest --prefer-source
+        uses: ramsey/composer-install@v2
 
       - name: "Run phan"
-        run: php vendor/bin/phan
+        run: php vendor/bin/phan --target-php-version=${{ matrix.php-version }}
 
   tests:
     name: "Unit Tests"
-
+    needs: static-code-analysis
     runs-on: ubuntu-latest
 
     strategy:
@@ -50,11 +58,13 @@ jobs:
       matrix:
         php-version:
           - "7.4"
-          - "8.0"
+          - "8.1"
+          - "8.2"
+          - "8.3"
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: "Install Redis"
         uses: shogo82148/actions-setup-redis@v1
@@ -72,13 +82,14 @@ jobs:
           extensions: apcu, memcached, redis
           ini-values: apc.enable=1, apc.enable_cli=1
 
-      - name: "Install dependencies with composer"
-        run: composer update --no-ansi --no-interaction --no-progress --no-suggest --prefer-source
+      - name: "Update dependencies with composer"
+        uses: ramsey/composer-install@v2
 
       - name: "Run tests with phpunit"
         run: php vendor/phpunit/phpunit/phpunit --configuration=phpunit.xml
 
       - name: "Send code coverage report to Codecov.io"
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+         token: ${{ secrets.CODECOV_TOKEN }}
+         files: .build/coverage/clover.xml
