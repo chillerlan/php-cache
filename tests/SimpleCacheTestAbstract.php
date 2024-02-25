@@ -7,7 +7,7 @@
  * @copyright    2017 Smiley
  * @license      MIT
  *
- * @phan-file-suppress PhanTypeMismatchArgument, PhanTypeMismatchArgumentProbablyReal
+ * @phan-file-suppress PhanTypeMismatchArgument, PhanTypeMismatchArgumentReal, PhanTypeMismatchArgumentProbablyReal
  */
 
 declare(strict_types=1);
