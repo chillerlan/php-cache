@@ -18,7 +18,7 @@ use chillerlan\Settings\SettingsContainerInterface;
 use chillerlan\SimpleCache\CacheOptions;
 use PHPUnit\Framework\TestCase;
 use Psr\SimpleCache\CacheInterface;
-use DateInterval, InvalidArgumentException, stdClass, TypeError;
+use DateInterval, InvalidArgumentException, TypeError;
 use function sleep;
 
 abstract class SimpleCacheTestAbstract extends TestCase{
@@ -53,14 +53,12 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 
 	public function testSetInvalidTTLException():void{
 		$this->expectException(TypeError::class);
-		$this->expectExceptionMessage('Argument #1 ($ttl) must be of type DateInterval|int|null');
 
-		$this->cache->set('.', '', new stdClass);
+		$this->cache->set('.', '', []);
 	}
 
 	public function testSetInvalidKeyException():void{
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid cache key: "42"');
+		$this->expectException(TypeError::class);
 
 		$this::assertTrue($this->cache->set(42, 'nope'));
 	}
@@ -71,9 +69,15 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 		$this::assertSame('default', $this->cache->get('foo', 'default'));
 	}
 
-	public function testGetInvalidKeyException():void{
+	public function testGetEmptyKeyException():void{
 		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid cache key: "42"');
+		$this->expectExceptionMessage('cache key is empty');
+
+		$this->cache->get('');
+	}
+
+	public function testGetInvalidKeyException():void{
+		$this->expectException(TypeError::class);
 
 		$this->cache->get(42);
 	}
@@ -83,8 +87,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testHasInvalidKeyException():void{
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid cache key: "42"');
+		$this->expectException(TypeError::class);
 
 		$this->cache->has(42);
 	}
@@ -95,8 +98,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testDeleteInvalidKeyException():void{
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid cache key: "42"');
+		$this->expectException(TypeError::class);
 
 		$this->cache->delete(42);
 	}
@@ -117,16 +119,14 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 
 	public function testSetMultipleInvalidTTLException():void{
 		$this->expectException(TypeError::class);
-		$this->expectExceptionMessage('Argument #1 ($ttl) must be of type DateInterval|int|null');
 
-		$this->cache->setMultiple(['.' => ''], new stdClass);
+		$this->cache->setMultiple(['.' => ''], []);
 	}
 
 	public function testSetMultipleInvalidKeyException():void{
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid cache key: "0"');
+		$this->expectException(TypeError::class);
 
-		$this->cache->setMultiple(['foo']);
+		$this->cache->setMultiple([0 => 'foo']);
 	}
 
 	public function testGetMultiple():void{
@@ -134,8 +134,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testGetMultipleInvalidKeyException():void{
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid cache key: "42"');
+		$this->expectException(TypeError::class);
 
 		$this->cache->getMultiple([42]);
 	}
@@ -149,8 +148,7 @@ abstract class SimpleCacheTestAbstract extends TestCase{
 	}
 
 	public function testDeleteMultipleInvalidKeyException():void{
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessage('invalid cache key: "42"');
+		$this->expectException(TypeError::class);
 
 		$this->cache->deleteMultiple([42]);
 	}
