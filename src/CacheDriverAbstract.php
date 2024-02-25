@@ -18,7 +18,7 @@ use chillerlan\Settings\SettingsContainerInterface;
 use Psr\Log\{LoggerAwareInterface, LoggerAwareTrait, LoggerInterface, NullLogger};
 use Psr\SimpleCache\CacheInterface;
 use DateInterval, DateTime, InvalidArgumentException, Traversable;
-use function is_array, is_int, is_string, iterator_to_array, time;
+use function is_array, is_int, iterator_to_array, time;
 
 abstract class CacheDriverAbstract implements CacheInterface, LoggerAwareInterface{
 	use LoggerAwareTrait;
