@@ -42,7 +42,7 @@ jobs:
           extensions: ast, apcu, memcached, redis
 
       - name: "Update dependencies with composer"
-        uses: ramsey/composer-install@v2
+        uses: ramsey/composer-install@v3
 
       - name: "Run phan"
         run: php vendor/bin/phan --target-php-version=${{ matrix.php-version }}
@@ -110,7 +110,7 @@ jobs:
           ini-values: apc.enable=1, apc.enable_cli=1
 
       - name: "Update dependencies with composer"
-        uses: ramsey/composer-install@v2
+        uses: ramsey/composer-install@v3
 
       - name: "Run tests with phpunit"
         run: php vendor/phpunit/phpunit/phpunit --configuration=phpunit.xml.dist
